@@ -1,0 +1,19 @@
+const express = require("express");
+const {
+  pegarQuizzes,
+  adicionarQuiz,
+  atualizarQuiz,
+  deletarQuiz,
+} = require("../controllers/quiz");
+
+const router = express.Router();
+
+router.get("/quizzes", pegarQuizzes);
+
+router.post("/quizzes", adicionarQuiz);
+
+router.put("/quizzes/:quiz_id", atualizarQuiz);
+
+router.delete("/quizzes/:quiz_id", deletarQuiz);
+
+module.exports = router;

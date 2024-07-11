@@ -215,7 +215,7 @@ exports.logarUsuario = (req, res) => {
             },
             console.log("a", tipo)
           );
-        }  else {
+        } else {
           return res.status(401).json({ message: "Tipo de usuário inválido" });
         }
 

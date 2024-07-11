@@ -1,5 +1,4 @@
 const express = require("express");
-const jwt = require("jsonwebtoken");
 const {
   pegarUsuarios,
   adicionarUsuario,
@@ -7,7 +6,7 @@ const {
   deletarUsuario,
   logarUsuario,
   rotaProtegida,
-} = require("../controllers/usuario.js");
+} = require("../controllers/user.js");
 
 const router = express.Router();
 

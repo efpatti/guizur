@@ -11,6 +11,9 @@ import Logado from "./Pages/Account/Logged";
 import NotFound from "./Pages/NotFound";
 import Adm from "./Pages/Adm";
 import Users from "./Pages/Users";
+import Quiz from "./Pages/Quiz";
+import Quizzes from "./Pages/Quizzes";
+import QuizEscolhido from "./Pages/Quizzes/QuizEscolhido";
 
 // Utilities
 import PrivateRoutes from "./Utils/PrivateRoutes";
@@ -44,7 +47,10 @@ export function Router() {
           ))}
           <Route path="*" element={<NotFound />} />
           <Route path="/" element={<Login />} exact />
-          <Route path="/usuarios" element={<Users />} exact />
+          <Route path="/users" element={<Users />} exact />
+          <Route path="/quiz" element={<Quiz />} exact />
+          <Route path="/quizzes" element={<Quizzes />} exact />
+          <Route path="/quizzes/:quiz_id" element={<QuizEscolhido />} exact />
         </Routes>
       </Box>
       {/* <Footer /> */}
