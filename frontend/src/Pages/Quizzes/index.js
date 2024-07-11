@@ -10,6 +10,7 @@ import {
   Button,
   SimpleGrid,
   IconButton,
+  InputLeftElement,
 } from "@chakra-ui/react";
 import { FaSearch } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
@@ -68,7 +69,7 @@ const Quizzes = () => {
           _focus={{ outline: "none" }}
         >
           {isFocused && (
-            <InputRightElement h="full" w="1/3">
+            <InputLeftElement h="full" w="1/3">
               <Button
                 variant="none"
                 size="sm"
@@ -80,7 +81,7 @@ const Quizzes = () => {
               >
                 x
               </Button>
-            </InputRightElement>
+            </InputLeftElement>
           )}
           <Input
             w="1/3"
