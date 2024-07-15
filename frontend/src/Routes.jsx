@@ -20,6 +20,7 @@ import PrivateRoutes from "./Utils/PrivateRoutes";
 import SharedRoutes from "./Utils/SharedRoutes";
 
 import { Box } from "@chakra-ui/react";
+import CriarQuiz from "./Pages/CriarQuiz";
 
 const routes = [
   {
@@ -46,11 +47,12 @@ export function Router() {
             </Route>
           ))}
           <Route path="*" element={<NotFound />} />
-          <Route path="/" element={<Login />} exact />
-          <Route path="/users" element={<Users />} exact />
-          <Route path="/quiz" element={<Quiz />} exact />
-          <Route path="/quizzes" element={<Quizzes />} exact />
-          <Route path="/quizzes/:quiz_id" element={<QuizEscolhido />} exact />
+          <Route path="/" element={<Login />} />
+          <Route path="/users" element={<Users />} />
+          <Route path="/quiz" element={<Quiz />} />
+          <Route path="/discover" element={<Quizzes />} exact />
+          <Route path="/discover/:quiz_id" element={<QuizEscolhido />} />
+          <Route path="/criar-quiz" element={<CriarQuiz />} />
         </Routes>
       </Box>
       {/* <Footer /> */}

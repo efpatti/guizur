@@ -30,13 +30,14 @@ const QuizEscolhido = () => {
         });
         setSelectedAnswers(initialSelectedAnswers);
         setQuestions(questionsData);
+        console.log("Questions: ", questions);
       } catch (error) {
         console.error(`Erro ao carregar questões do quiz ${quiz_id}:`, error);
       }
     };
 
     fetchQuestions();
-  }, [quiz_id, pegarQuestoes]);
+  }, []);
 
   const handleAnswerClick = (questionId, answerId) => {
     if (!showResult) {

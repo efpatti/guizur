@@ -29,8 +29,21 @@ export const QuizProvider = ({ children }) => {
       );
       return res.data;
     } catch (error) {
-      console.error(`Erro ao carregar questões do quiz ${quiz_id}:`, error);
-      return []; // Retorna um array vazio em caso de erro
+      if (error.response) {
+        // O servidor retornou um status de erro específico (por exemplo, 404)
+        console.error(
+          `Erro ${error.response.status} ao carregar questões do quiz ${quiz_id}:`,
+          error.response.data
+        );
+      } else if (error.request) {
+        // A requisição foi feita, mas não houve resposta do servidor
+        console.error("Erro na requisição:", error.request);
+      } else {
+        // Algum outro erro ocorreu
+        console.error("Erro ao processar requisição:", error.message);
+      }
+      // Retorna um array vazio em caso de erro
+      return [];
     }
   };
 

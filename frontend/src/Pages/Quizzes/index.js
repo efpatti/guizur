@@ -32,7 +32,7 @@ const Quizzes = () => {
 
   const handleQuizClick = (quiz_id) => {
     setQuiz(quiz_id); // Armazenando o ID do quiz no contexto global
-    navigate(`/quizzes/${quiz_id}`); // Redireciona para o caminho com o ID do quiz
+    navigate(`/discover/${quiz_id}`); // Redireciona para o caminho com o ID do quiz
   };
 
   const handleInputChange = (e) => {
