@@ -6,7 +6,7 @@ import { useAuth } from "../../Hooks/useAuth";
 import CreateQuestion from "./CreateQuestion";
 
 const Index = () => {
-  const { addressBack } = useAuth();
+  const { addressBack, user } = useAuth();
   const ref = useRef();
   const [selectedQuiz, setSelectedQuiz] = useState(null);
   const [showQuestionForm, setShowQuestionForm] = useState(false);
@@ -49,6 +49,7 @@ const Index = () => {
   return (
     <Box>
       <form ref={ref} onSubmit={handleSubmitQuiz} id="form-quiz">
+        <h1>{user.idUsuario}</h1>
         <FormControl>
           <FormLabel>Título do Quiz</FormLabel>
           <Input name="title" type="text" defaultValue="" />

@@ -58,21 +58,21 @@ const QuizEscolhido = () => {
     <Container maxW="container.lg" centerContent>
       {quizzesFiltered.map((quiz) => (
         <Text key={quiz.quiz_id} fontSize="2xl" mb="4">
-          Quiz Escolhido: {quiz.title}
+          {quiz.title}
         </Text>
       ))}
       {questions.map((question) => (
         <Box
           key={question.question_id}
           mb="4"
-          borderWidth="1px"
-          borderRadius="md"
+          rounded="md"
+          boxShadow="md"
           w="90%"
           minH="30vh"
           alignContent="center"
           p="5"
         >
-          <Text fontSize="xl" textAlign="center" m="5">
+          <Text fontSize="xl" m="5">
             {question.question_text}
           </Text>
           <Grid

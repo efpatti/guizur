@@ -21,9 +21,11 @@ import {
 } from "@chakra-ui/react";
 import { FaHome, FaPlusCircle, FaCompass, FaSearch } from "react-icons/fa";
 import Profile from "../../Pages/Account/Profile";
+import { useNavigate } from "react-router-dom";
 
 function NavBar() {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const navigate = useNavigate();
 
   const navLinks = [
     {
@@ -62,19 +64,19 @@ function NavBar() {
         >
           <Stack direction="row" spacing={6}>
             {navLinks.map((item, i) => (
-              <Link href={item.href} key={i}>
-                <Button
-                  w="full"
-                  size="md"
-                  leftIcon={<item.icon />}
-                  variant="none"
-                  _hover={{ color: "blue.600" }}
-                  rounded="lg"
-                  mr={3}
-                >
-                  {item.name}
-                </Button>
-              </Link>
+              <Button
+                key={i}
+                w="full"
+                size="md"
+                leftIcon={<item.icon />}
+                variant="none"
+                _hover={{ color: "blue.600" }}
+                rounded="lg"
+                mr={3}
+                onClick={() => navigate(item.href)}
+              >
+                {item.name}
+              </Button>
             ))}
           </Stack>
           <InputGroup
@@ -118,6 +120,7 @@ function NavBar() {
               color="blue.600"
               border="1px"
               borderColor="gray.200"
+              onClick={() => navigate("/")}
             >
               Entrar
             </Button>

@@ -6,6 +6,7 @@ import {
   Box,
   Icon,
   keyframes,
+  Button,
 } from "@chakra-ui/react";
 import { FaRegHandshake } from "react-icons/fa6";
 
@@ -19,7 +20,7 @@ const shakeKeyframes = keyframes`
 `;
 
 function Logado() {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
 
   return (
     <Container
@@ -44,6 +45,7 @@ function Logado() {
           animation={`${shakeKeyframes} 1.5s infinite`}
         />
       </Box>
+      <Button onClick={logout}>Sair</Button>
     </Container>
   );
 }

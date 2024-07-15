@@ -178,6 +178,7 @@ exports.logarUsuario = (req, res) => {
           // Gerar um token de administrador
           token = jwt.sign(
             {
+              idUsuario: results[0].idUsuario,
               nome: results[0].nome,
               email: results[0].email,
               cpf: results[0].cpf,
@@ -198,6 +199,7 @@ exports.logarUsuario = (req, res) => {
           // Gerar um token de Usuário
           token = jwt.sign(
             {
+              idUsuario: results[0].idUsuario,
               nome: results[0].nome,
               email: results[0].email,
               cpf: results[0].cpf,

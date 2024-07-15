@@ -10,10 +10,11 @@ exports.pegarQuizzes = (_, res) => {
 };
 
 exports.adicionarQuiz = (req, res) => {
-  const { title, description } = req.body;
+  const { title, description, author_id } = req.body;
 
-  const q = "INSERT INTO quizzes (title, description) VALUES (?, ?)";
-  const values = [title, description];
+  const q =
+    "INSERT INTO quizzes (title, description, author_id) VALUES (?, ?, ?)";
+  const values = [title, description, author_id];
 
   db.query(q, values, (err, result) => {
     if (err) {
