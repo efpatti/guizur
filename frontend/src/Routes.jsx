@@ -20,6 +20,7 @@ import PrivateRoutes from "./Utils/PrivateRoutes";
 import SharedRoutes from "./Utils/SharedRoutes";
 
 import { Box } from "@chakra-ui/react";
+import MeuQuizEscolhido from "./Pages/Quiz/MeuQuizEscolhido";
 
 const routes = [
   {
@@ -27,6 +28,7 @@ const routes = [
     childrens: [
       { path: "/logado", element: <Logado /> },
       { path: "/criar-quiz", element: <Quiz /> },
+      { path: "/meu-quiz-escolhido/:quiz_id", element: <MeuQuizEscolhido /> },
     ],
   },
   {

@@ -28,6 +28,25 @@ exports.pegarQuizPeloAutor = (req, res) => {
   });
 };
 
+exports.pegarQuizPeloId = (req, res) => {
+  const quiz_id = req.params.quiz_id;
+
+  const sql = "SELECT * FROM quizzes WHERE quiz_id = ?";
+  db.query(sql, [quiz_id], (err, result) => {
+    if (err) {
+      res.status(500).json({ error: err.message });
+    } else {
+      if (result.length === 0) {
+        res
+          .status(404)
+          .json({ message: "Quizzes não encontrados para este id" });
+      } else {
+        res.status(200).json(result);
+      }
+    }
+  });
+};
+
 exports.adicionarQuiz = (req, res) => {
   const { title, description, author_id } = req.body;
 
