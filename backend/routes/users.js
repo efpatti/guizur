@@ -6,6 +6,7 @@ const {
   deletarUsuario,
   logarUsuario,
   rotaProtegida,
+  pegarUsuarioPorId,
 } = require("../controllers/user.js");
 
 const router = express.Router();
@@ -19,6 +20,8 @@ router.post("/loginUsuario", logarUsuario);
 router.get("/protegido", rotaProtegida);
 
 router.put("/usuarios/:idUsuario", atualizarUsuario);
+
+router.get("/usuarios/:idUsuario", pegarUsuarioPorId);
 
 router.delete("/usuarios/:idUsuario", deletarUsuario);
 

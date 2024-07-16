@@ -1,17 +1,11 @@
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { useParams } from "react-router-dom";
-import {
-  Box,
-  Text,
-  Grid,
-  Container,
-  Flex,
-  border,
-  Stack,
-} from "@chakra-ui/react";
+import { Box, Text, Grid, Container, Flex, Stack } from "@chakra-ui/react";
 import { useQuizContext } from "./QuizContext";
 import { FaCheckCircle, FaTimesCircle } from "react-icons/fa";
-import { IconContext } from "react-icons/lib";
+import { toast } from "react-toastify";
+import { useAuth } from "../../Hooks/useAuth";
 
 const QuizEscolhido = () => {
   const { quiz_id } = useParams();
@@ -19,6 +13,18 @@ const QuizEscolhido = () => {
   const [questions, setQuestions] = useState([]);
   const [selectedAnswers, setSelectedAnswers] = useState({});
   const [showResult, setShowResult] = useState(false);
+  const { addressBack } = useAuth();
+  const [usuarios, setUsuarios] = useState([]);
+  const [autor, setAutor] = useState(null); // Inicializa como null
+
+  const pegarUsuarios = async () => {
+    try {
+      const res = await axios.get(`${addressBack}/usuarios`);
+      setUsuarios(res.data);
+    } catch (error) {
+      toast.error("Erro ao carregar usuários");
+    }
+  };
 
   useEffect(() => {
     const fetchQuestions = async () => {
@@ -30,14 +36,43 @@ const QuizEscolhido = () => {
         });
         setSelectedAnswers(initialSelectedAnswers);
         setQuestions(questionsData);
-        console.log("Questions: ", questions);
+        console.log("Questions: ", questionsData);
       } catch (error) {
         console.error(`Erro ao carregar questões do quiz ${quiz_id}:`, error);
       }
     };
 
+    const fetchUsuarios = async () => {
+      try {
+        await pegarUsuarios();
+      } catch (error) {
+        console.error("Erro ao carregar usuários:", error);
+      }
+    };
+
     fetchQuestions();
-  }, []);
+    fetchUsuarios();
+  }, [quiz_id]); // Adiciona quiz_id como dependência para atualizar quando o quiz_id mudar
+
+  useEffect(() => {
+    // Verifica se existem usuários e define o autor
+    if (usuarios.length > 0 && quiz_id) {
+      const quizSelecionado = quizzes.find(
+        (quiz) => quiz.quiz_id === parseInt(quiz_id)
+      );
+      console.log(quizSelecionado);
+      if (quizSelecionado) {
+        const usuarioSelecionado = usuarios.find(
+          (usuario) => usuario.idUsuario === quizSelecionado.author_id
+        );
+        if (usuarioSelecionado) {
+          setAutor(usuarioSelecionado.nome);
+        } else {
+          setAutor("Autor não encontrado"); // Trate caso não encontre o autor
+        }
+      }
+    }
+  }, [usuarios, quiz_id, quizzes]); // Executa sempre que usuários, quiz_id ou quizzes forem alterados
 
   const handleAnswerClick = (questionId, answerId) => {
     if (!showResult) {
@@ -46,7 +81,7 @@ const QuizEscolhido = () => {
         [questionId]: answerId,
       };
       setSelectedAnswers(updatedSelectedAnswers);
-      setShowResult(true); // Show results after selecting an answer
+      setShowResult(true); // Mostra os resultados após selecionar uma resposta
     }
   };
 
@@ -58,7 +93,7 @@ const QuizEscolhido = () => {
     <Container maxW="container.lg" centerContent>
       {quizzesFiltered.map((quiz) => (
         <Text key={quiz.quiz_id} fontSize="2xl" mb="4">
-          {quiz.title}
+          {quiz.title}, por {autor !== null ? autor : "Carregando..."}
         </Text>
       ))}
       {questions.map((question) => (

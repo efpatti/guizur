@@ -9,6 +9,25 @@ exports.pegarQuizzes = (_, res) => {
   });
 };
 
+exports.pegarQuizPeloAutor = (req, res) => {
+  const author_id = req.query.author_id;
+
+  const sql = "SELECT * FROM quizzes WHERE author_id = ?";
+  db.query(sql, [author_id], (err, result) => {
+    if (err) {
+      res.status(500).json({ error: err.message });
+    } else {
+      if (result.length === 0) {
+        res
+          .status(404)
+          .json({ message: "Quizzes não encontrados para este autor" });
+      } else {
+        res.status(200).json(result);
+      }
+    }
+  });
+};
+
 exports.adicionarQuiz = (req, res) => {
   const { title, description, author_id } = req.body;
 

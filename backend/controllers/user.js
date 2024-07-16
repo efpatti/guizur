@@ -13,6 +13,24 @@ exports.pegarUsuarios = (_, res) => {
   });
 };
 
+// Função para buscar um usuário pelo ID
+exports.pegarUsuarioPorId = (req, res) => {
+  const idUsuario = req.params.idUsuario; // Alterado para req.params
+
+  const sql = "SELECT * FROM cadastrousuario WHERE idUsuario = ?";
+  db.query(sql, [idUsuario], (err, result) => {
+    if (err) {
+      res.status(500).json({ error: err.message });
+    } else {
+      if (result.length === 0) {
+        res.status(404).json({ message: "Usuário não encontrado" });
+      } else {
+        res.status(200).json(result[0]); // Retorna apenas o primeiro resultado
+      }
+    }
+  });
+};
+
 exports.adicionarUsuario = (req, res) => {
   const {
     nome,
