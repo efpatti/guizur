@@ -20,7 +20,13 @@ import {
   CiHome as Home,
 } from "react-icons/ci";
 import { HiBars3BottomLeft as Filter } from "react-icons/hi2";
-import { FaSearch } from "react-icons/fa";
+import { FaSearch as Search } from "react-icons/fa";
+import {
+  FaClover as Clover,
+  FaPerson as Person,
+  FaPersonWalkingArrowLoopLeft as About,
+  FaList as List,
+} from "react-icons/fa6";
 
 function MeusQuizzes() {
   const { addressBack, user } = useAuth();
@@ -57,6 +63,8 @@ function MeusQuizzes() {
   const placeholderStyled = {
     color: "gray.600",
     fontWeight: "light",
+    borderBottom: "1px solid #CBD5E0", // Estilo do "border bottom"
+    paddingBottom: "2px",
   };
 
   const handleButtonClick = (label) => {
@@ -66,7 +74,7 @@ function MeusQuizzes() {
   const homeSelected = selectedButton === "Meus conteúdos" ? true : false;
   const saveSelected = selectedButton === "Salvos" ? true : false;
   const heartSelected = selectedButton === "Curtidos" ? true : false;
-  const types = [
+  const typesFilter = [
     {
       type: "Rascunho",
     },
@@ -81,13 +89,89 @@ function MeusQuizzes() {
     },
   ];
 
+  const typesQuiz = [
+    {
+      title: "Quiz de Certo e Errado",
+      desc: "Só tem uma resposta certa para cada pergunta e é ótimo para testar os conhecimentos dos jogadores",
+      color_bg_main: "blue.50",
+      color_bg_icon: "blue.100",
+      color_icon: "blue",
+      icon: Clover,
+    },
+    {
+      title: "Quiz de Personalidade",
+      desc: "Não há respostas certas. O resultado varia de acordo com a personalidade de cada jogador",
+      color_bg_main: "orange.50",
+      color_bg_icon: "orange.100",
+      color_icon: "orange",
+      icon: Person,
+    },
+    {
+      title: "Sobre Mim",
+      desc: "Desafie seus amigos para saber quem sabe mais sobre você",
+      color_bg_main: "green.50",
+      color_bg_icon: "green.100",
+      color_icon: "green",
+      icon: About,
+    },
+    {
+      title: "Lista",
+      desc: "Crie seu texto organizado por itens. Exemplo: Ranking",
+      color_bg_main: "red.50",
+      color_bg_icon: "red.100",
+      color_icon: "red",
+      icon: List,
+    },
+  ];
+
   return (
-    <Box w="50%" margin="auto">
-      <Stack direction="column" spacing={4}>
-        <Grid templateColumns="repeat(3, 1fr)" gap={3} w="60%">
+    <Box w="60%" margin="auto">
+      <Stack direction="column" spacing={1} textAlign="start" mb={3}>
+        <Text fontWeight="semibold" fontSize="xl">
+          Quer criar um quiz? É muito fácil!
+        </Text>
+        <Text fontWeight="light" fontSize="sm">
+          Para começar a criar o seu quiz, teste de personalidade ou lista,
+          basta clicar no respectivo botão abaixo e começar agora mesmo.
+        </Text>
+        <Text fontSize="lg" fontWeight="semibold">
+          É grátis, rápido e muito fácil.
+        </Text>
+      </Stack>
+      <Grid templateColumns="repeat(3, 1fr)" gap={3} p={3} mb={9}>
+        {typesQuiz.map((item, i) => (
+          <Box
+            key={i}
+            bg={item.color_bg_main}
+            p={5}
+            rounded="xl"
+            boxShadow="md"
+          >
+            <Stack direction="row">
+              <Box>
+                <Button
+                  bg={item.color_bg_icon}
+                  size="sm"
+                  rounded="3xl"
+                  color={item.color_icon}
+                >
+                  {React.createElement(item.icon)}
+                </Button>
+              </Box>
+              <Box textAlign="start">
+                <Text fontWeight="semibold">{item.title}</Text>
+                <Text fontSize="xs" fontWeight="light">
+                  {item.desc}
+                </Text>
+              </Box>
+            </Stack>
+          </Box>
+        ))}
+      </Grid>
+      <Stack direction="column" spacing={4} mt={3}>
+        <Stack direction="row" spacing={3} w="40%">
           <Button
             onClick={() => handleButtonClick("Meus conteúdos")}
-            p="3"
             key="Meus conteúdos"
             rounded="2xl"
             variant="none"
@@ -99,14 +183,13 @@ function MeusQuizzes() {
               ...(homeSelected && btnSelected),
             }}
           >
-            <Home size="20px" />
-            <Text fontSize="sm" ml={2}>
+            <Home size="15px" />
+            <Text fontSize="xs" ml={1}>
               Meus conteúdos
             </Text>
           </Button>
           <Button
             onClick={() => handleButtonClick("Salvos")}
-            p="3"
             key="Salvos"
             rounded="2xl"
             variant="none"
@@ -118,14 +201,13 @@ function MeusQuizzes() {
               ...(saveSelected && btnSelected),
             }}
           >
-            <Save size="20px" />
-            <Text fontSize="sm" ml={2}>
+            <Save size="15px" />
+            <Text fontSize="xs" ml={1}>
               Salvos
             </Text>
           </Button>
           <Button
             onClick={() => handleButtonClick("Curtidos")}
-            p="3"
             key="Curtidos"
             rounded="2xl"
             variant="none"
@@ -137,12 +219,12 @@ function MeusQuizzes() {
               ...(heartSelected && btnSelected),
             }}
           >
-            <Heart size="20px" />
-            <Text fontSize="sm" ml={2}>
+            <Heart size="15px" />
+            <Text fontSize="xs" ml={1}>
               Curtidos
             </Text>
           </Button>
-        </Grid>
+        </Stack>
         <Grid templateColumns="repeat(2, 1fr)" gap="3px" w="50%">
           <Box>
             <Stack direction="row" align="center">
@@ -153,8 +235,10 @@ function MeusQuizzes() {
                 sx={placeholderStyled}
               >
                 <option>Todos</option>
-                {types.map((item, i) => (
-                  <option key={i}>{item.type}</option>
+                {typesFilter.map((item, i) => (
+                  <option key={i}>
+                    <Text decoration="Highlight">{item.type}</Text>
+                  </option>
                 ))}
               </Select>
             </Stack>
@@ -176,7 +260,7 @@ function MeusQuizzes() {
         >
           <InputLeftElement
             pointerEvents="none"
-            children={<FaSearch />}
+            children={<Search />}
             rounded="xl"
             h="full"
             color="gray.400"

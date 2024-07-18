@@ -12,9 +12,9 @@ const Index = () => {
       margin="auto"
       textAlign="center"
     >
-      <Box mb={4}>
+      {/* <Box mb={4}>
         <NovoQuiz />
-      </Box>
+      </Box> */}
       <Box>
         <MeusQuizzes />
       </Box>
