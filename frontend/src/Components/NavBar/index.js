@@ -17,15 +17,16 @@ import {
   Grid,
   Stack,
   InputLeftElement,
-  Link,
 } from "@chakra-ui/react";
 import { FaHome, FaPlusCircle, FaCompass, FaSearch } from "react-icons/fa";
 import Profile from "../../Pages/Account/Profile";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../Hooks/useAuth";
 
 function NavBar() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
 
   const navLinks = [
     {
@@ -36,7 +37,7 @@ function NavBar() {
     {
       name: "Criar",
       icon: FaPlusCircle,
-      href: "/criar-quiz",
+      href: isAuthenticated ? "studio" : "criar-quiz",
     },
     {
       name: "Explorar",

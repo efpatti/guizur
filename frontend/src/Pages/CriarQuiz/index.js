@@ -1,10 +1,17 @@
-import { Text } from "@chakra-ui/react";
+import { Stack } from "@chakra-ui/react";
+import {
+  HeadingText as Heading,
+  TypesQuiz as Types,
+  QuizzesDescription as QuizzesDesc,
+} from "../Quiz/SharedElements";
 
 function CriarQuiz() {
   return (
-    <>
-      <Text>Criar Quiz</Text>
-    </>
+    <Stack direction="column" w="50%" margin="auto">
+      <Heading />
+      <Types columns="4" />
+      <QuizzesDesc />
+    </Stack>
   );
 }
 

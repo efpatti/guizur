@@ -21,12 +21,7 @@ import {
 } from "react-icons/ci";
 import { HiBars3BottomLeft as Filter } from "react-icons/hi2";
 import { FaSearch as Search } from "react-icons/fa";
-import {
-  FaClover as Clover,
-  FaPerson as Person,
-  FaPersonWalkingArrowLoopLeft as About,
-  FaList as List,
-} from "react-icons/fa6";
+import { TypesQuiz as Types, HeadingText as Heading } from "./SharedElements";
 
 function MeusQuizzes() {
   const { addressBack, user } = useAuth();
@@ -89,85 +84,10 @@ function MeusQuizzes() {
     },
   ];
 
-  const typesQuiz = [
-    {
-      title: "Quiz de Certo e Errado",
-      desc: "Só tem uma resposta certa para cada pergunta e é ótimo para testar os conhecimentos dos jogadores",
-      color_bg_main: "blue.50",
-      color_bg_icon: "blue.100",
-      color_icon: "blue",
-      icon: Clover,
-    },
-    {
-      title: "Quiz de Personalidade",
-      desc: "Não há respostas certas. O resultado varia de acordo com a personalidade de cada jogador",
-      color_bg_main: "orange.50",
-      color_bg_icon: "orange.100",
-      color_icon: "orange",
-      icon: Person,
-    },
-    {
-      title: "Sobre Mim",
-      desc: "Desafie seus amigos para saber quem sabe mais sobre você",
-      color_bg_main: "green.50",
-      color_bg_icon: "green.100",
-      color_icon: "green",
-      icon: About,
-    },
-    {
-      title: "Lista",
-      desc: "Crie seu texto organizado por itens. Exemplo: Ranking",
-      color_bg_main: "red.50",
-      color_bg_icon: "red.100",
-      color_icon: "red",
-      icon: List,
-    },
-  ];
-
   return (
     <Box w="60%" margin="auto">
-      <Stack direction="column" spacing={1} textAlign="start" mb={3}>
-        <Text fontWeight="semibold" fontSize="xl">
-          Quer criar um quiz? É muito fácil!
-        </Text>
-        <Text fontWeight="light" fontSize="sm">
-          Para começar a criar o seu quiz, teste de personalidade ou lista,
-          basta clicar no respectivo botão abaixo e começar agora mesmo.
-        </Text>
-        <Text fontSize="lg" fontWeight="semibold">
-          É grátis, rápido e muito fácil.
-        </Text>
-      </Stack>
-      <Grid templateColumns="repeat(3, 1fr)" gap={3} p={3} mb={9}>
-        {typesQuiz.map((item, i) => (
-          <Box
-            key={i}
-            bg={item.color_bg_main}
-            p={5}
-            rounded="xl"
-            boxShadow="md"
-          >
-            <Stack direction="row">
-              <Box>
-                <Button
-                  bg={item.color_bg_icon}
-                  size="sm"
-                  rounded="3xl"
-                  color={item.color_icon}
-                >
-                  {React.createElement(item.icon)}
-                </Button>
-              </Box>
-              <Box textAlign="start">
-                <Text fontWeight="semibold">{item.title}</Text>
-                <Text fontSize="xs" fontWeight="light">
-                  {item.desc}
-                </Text>
-              </Box>
-            </Stack>
-          </Box>
-        ))}
-      </Grid>
+      <Heading />
+      <Types columns="3" />
       <Stack direction="column" spacing={4} mt={3}>
         <Stack direction="row" spacing={3} w="40%">
           <Button
