@@ -18,7 +18,7 @@ import {
 } from "@chakra-ui/react";
 import { toast } from "react-toastify";
 import { FaCheck } from "react-icons/fa";
-import { useAuth } from "../../Hooks/useAuth";
+import { useAuth } from "../../../Hooks/useAuth";
 
 const Form = ({ pegarUsuarios, aoEditarUsuario, setAoEditarUsuario }) => {
   const { addressBack } = useAuth();

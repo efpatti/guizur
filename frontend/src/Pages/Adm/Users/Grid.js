@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { FaTrash, FaEdit } from "react-icons/fa";
 import PropTypes from "prop-types";
-import { useAuth } from "../../Hooks/useAuth";
+import { useAuth } from "../../../Hooks/useAuth";
 
 const Grid = ({ usuarios, setUsuarios, setAoEditarUsuario }) => {
   const toast = useToast();

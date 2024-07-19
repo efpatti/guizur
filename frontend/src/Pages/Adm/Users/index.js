@@ -5,7 +5,7 @@ import Form from "./Form";
 import Grid from "./Grid";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useAuth } from "../../Hooks/useAuth";
+import { useAuth } from "../../../Hooks/useAuth";
 
 const Dashboard = () => {
   useEffect(() => {

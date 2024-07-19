@@ -10,7 +10,7 @@ import Login from "./Pages/Account/Login";
 import Logado from "./Pages/Account/Logged";
 import NotFound from "./Pages/NotFound";
 import Adm from "./Pages/Adm";
-import Users from "./Pages/Users";
+import Users from "./Pages/Adm/Users";
 import Quiz from "./Pages/PagesQuiz/Quiz";
 import Quizzes from "./Pages/PagesQuiz/Quizzes";
 import QuizEscolhido from "./Pages/PagesQuiz/Quizzes/QuizEscolhido";
