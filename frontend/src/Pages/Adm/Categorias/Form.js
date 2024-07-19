@@ -5,15 +5,15 @@ import { FormControl, FormLabel, Input, Button, Box } from "@chakra-ui/react";
 import { toast } from "react-toastify";
 import { useAuth } from "../../../Hooks/useAuth";
 
-const Form = ({ pegarCategorias, aoEditarCategoria, setAoEditarCategoria }) => {
+const Form = ({ aoEditarCategoria, setAoEditarCategoria }) => {
   const { addressBack } = useAuth();
   const ref = useRef();
 
   useEffect(() => {
     if (aoEditarCategoria) {
       const categoria = ref.current;
-      categoria.name.value = aoEditarCategoria.name;
-      categoria.code.value = aoEditarCategoria.code;
+      categoria.elements.name.value = aoEditarCategoria.name;
+      categoria.elements.code.value = aoEditarCategoria.code;
     }
   }, [aoEditarCategoria]);
 
@@ -25,30 +25,40 @@ const Form = ({ pegarCategorias, aoEditarCategoria, setAoEditarCategoria }) => {
 
     // Verifique se todos os campos estão preenchidos
     const campos = ["name", "code"];
-    if (campos.some((campo) => !categoria[campo].value)) {
+    if (campos.some((campo) => !categoria.elements[campo].value)) {
       return toast.warn("Preencha todos os campos!");
     }
 
     const dadosCategoria = {
-      name: categoria.name.value,
-      code: categoria.code.value,
+      name: categoria.elements.name.value,
+      code: categoria.elements.code.value,
     };
 
     try {
-      const response = await axios.post(
-        aoEditarCategoria
-          ? `${addressBack}/categories/${aoEditarCategoria.idCategory}`
-          : `${addressBack}/categories`,
-        dadosCategoria
-      );
-      console.log("Resposta:", response.data);
-      toast.success(response.data);
-      campos.forEach((campo) => (categoria[campo].value = ""));
+      let response;
+
+      if (aoEditarCategoria) {
+        // Se aoEditarCategoria existe, faz um PUT para atualizar
+        const url = `${addressBack}/categories/${aoEditarCategoria.idCategory}`;
+        response = await axios.put(url, dadosCategoria);
+        toast.success("Categoria atualizada com sucesso!");
+      } else {
+        // Caso contrário, faz um POST para adicionar uma nova categoria
+        const url = `${addressBack}/categories`;
+        response = await axios.post(url, dadosCategoria);
+        toast.success("Categoria adicionada com sucesso!");
+      }
+
+      console.log("Resposta da API:", response.data);
+
+      // Limpa os campos do formulário
+      categoria.reset();
+
+      // Limpa o estado de aoEditarCategoria
       setAoEditarCategoria(null);
-      pegarCategorias();
     } catch (error) {
-      console.error("Erro:", error.response.data);
-      toast.error(error.response.data.message);
+      console.error("Erro ao enviar formulário:", error);
+      toast.error(error.response.data.message || "Erro desconhecido");
     }
   };
 
@@ -71,9 +81,7 @@ const Form = ({ pegarCategorias, aoEditarCategoria, setAoEditarCategoria }) => {
   );
 };
 
-// Definindo PropTypes para validar as props
 Form.propTypes = {
-  pegarCategorias: PropTypes.func.isRequired,
   aoEditarCategoria: PropTypes.object,
   setAoEditarCategoria: PropTypes.func.isRequired,
 };

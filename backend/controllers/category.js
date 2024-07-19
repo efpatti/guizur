@@ -29,13 +29,20 @@ exports.adicionarCategoria = (req, res) => {
 };
 
 exports.atualizarCategoria = (req, res) => {
-  const { name, code } = req.body;
+  const { name, code } = req.body; // Desestruturação correta
+  const idCategory = req.params.idCategory; // Captura o ID da categoria da URL
 
-  const q = "UPDATE categories SET name = ?, code = ? WHERE idCategory = ?";
+  const q =
+    "UPDATE categories SET `name` = ?, `code` = ? WHERE `idCategory` = ?";
   const values = [name, code, idCategory];
 
   db.query(q, values, (err) => {
-    if (err) return res.status(500).json({ error: err.message });
+    if (err) {
+      console.error("Erro ao atualizar categoria:", err);
+      return res
+        .status(500)
+        .json({ error: "Erro interno do servidor ao atualizar categoria" });
+    }
     return res.status(200).json("Categoria atualizada com sucesso!");
   });
 };
@@ -43,7 +50,7 @@ exports.atualizarCategoria = (req, res) => {
 exports.deletarCategoria = (req, res) => {
   const idCategory = req.params.idCategory;
 
-  const q = "DELETE FROM category WHERE idCategory = ?";
+  const q = "DELETE FROM categories WHERE idCategory = ?";
 
   db.query(q, [idCategory], (err) => {
     if (err) return res.status(500).json({ error: err.message });

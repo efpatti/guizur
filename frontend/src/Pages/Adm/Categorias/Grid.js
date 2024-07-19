@@ -31,7 +31,7 @@ const Grid = ({ categorias, setCategorias, setAoEditarCategoria }) => {
       );
       setCategorias(newArray);
       toast({
-        title: "Categoria excluído com sucesso!",
+        title: "Categoria excluída com sucesso!",
         status: "success",
         duration: 3000,
         isClosable: true,

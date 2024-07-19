@@ -8,13 +8,10 @@ import "react-toastify/dist/ReactToastify.css";
 import { useAuth } from "../../../Hooks/useAuth";
 
 const Dashboard = () => {
-  useEffect(() => {
-    document.title = "Guizur | Categorias";
-  }, []);
+  const { addressBack } = useAuth();
 
   const [categorias, setCategorias] = useState([]);
   const [aoEditarCategoria, setAoEditarCategoria] = useState(null);
-  const { addressBack } = useAuth();
 
   const pegarCategorias = async () => {
     try {
@@ -28,8 +25,9 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    pegarCategorias();
-  }, []);
+    document.title = "Guizur | Categorias";
+    pegarCategorias(); // Chamada inicial para carregar categorias
+  }, []); // Array vazio indica que useEffect será executado apenas uma vez após a montagem do componente
 
   return (
     <>

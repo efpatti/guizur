@@ -2,12 +2,11 @@ import React, { useState } from "react";
 import { Flex, Box, Grid, Text, Button } from "@chakra-ui/react";
 
 import { useNavigate } from "react-router-dom";
-import { useQuizContext } from "./QuizContext";
+import { useQuizContext } from "../SharedElements/QuizContext";
 
 const Quizzes = () => {
   const { setQuiz, quizzes, categorias } = useQuizContext(); // Utilizando quizzes do contexto global
   const [category, setCategory] = useState(null); // Inicialmente nenhum filtro de categoria
-  console.log(categorias);
 
   const navigate = useNavigate();
 
@@ -33,23 +32,15 @@ const Quizzes = () => {
         <Button onClick={() => setCategory(null)}>Todos</Button>
         {categorias.map((item, i) => (
           <Button
+            key={i}
             onClick={() =>
-              setCategory(category === item.category ? null : item.category)
+              setCategory(category === item.name ? null : item.name)
             }
-            variant={category === item.category ? "solid" : "outline"}
+            variant={category === item.name ? "solid" : "outline"}
           >
-            {item.category}
+            {item.name}
           </Button>
         ))}
-
-        <Button
-          onClick={() =>
-            setCategory(category === "Basquete" ? null : "Basquete")
-          }
-          variant={category === "Basquete" ? "solid" : "outline"}
-        >
-          Basquete
-        </Button>
         <Text mt="2" mb="4">
           {category !== null && (
             <Text>{numResultados} resultados encontrados</Text>

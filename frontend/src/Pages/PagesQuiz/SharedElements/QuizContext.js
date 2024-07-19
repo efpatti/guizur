@@ -21,7 +21,7 @@ export const QuizProvider = ({ children }) => {
     };
     const pegarCategorias = async () => {
       try {
-        const res = await axios.get(`${addressBack}/quizzes/categorias`);
+        const res = await axios.get(`${addressBack}/categories`);
         setCategorias(res.data);
       } catch (error) {
         console.error("Erro ao carregar quizzes:", error);
