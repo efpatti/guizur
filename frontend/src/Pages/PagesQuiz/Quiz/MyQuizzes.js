@@ -26,7 +26,7 @@ import { HiBars3BottomLeft as Filter } from "react-icons/hi2";
 import { FaSearch as Search, FaWindowClose as Close } from "react-icons/fa";
 import { TypesQuiz as Types, HeadingText as Heading } from "../SharedElements";
 
-function MeusQuizzes() {
+function MyQuizzes() {
   const { addressBack, user } = useAuth();
   const [meusQuizzes, setMeusQuizzes] = useState([]);
   const [selectedButton, setSelectedButton] = useState("Meus conteúdos");
@@ -160,7 +160,7 @@ function MeusQuizzes() {
             </Text>
           </Button>
         </Stack>
-        <Grid templateColumns="repeat(2, 1fr)" gap="3px" w="50%">
+        <Grid templateColumns="repeat(2, 1fr)" gap={3} w="50%">
           <Box>
             <Stack direction="row" align="center">
               <Filter size="20px" />
@@ -268,4 +268,4 @@ function MeusQuizzes() {
   );
 }
 
-export default MeusQuizzes;
+export default MyQuizzes;

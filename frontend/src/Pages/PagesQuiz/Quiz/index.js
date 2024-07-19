@@ -1,11 +1,11 @@
 import React from "react";
 import { Box } from "@chakra-ui/react";
-import MeusQuizzes from "./MeusQuizzes";
+import MyQuizzes from "./MyQuizzes";
 
 const Index = () => {
   return (
     <Box w="90%" margin="auto" textAlign="center">
-      <MeusQuizzes />
+      <MyQuizzes />
     </Box>
   );
 };

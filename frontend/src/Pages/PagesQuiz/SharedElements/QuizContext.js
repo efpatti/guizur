@@ -5,9 +5,10 @@ import { useAuth } from "../../../Hooks/useAuth";
 const QuizContext = createContext();
 
 export const QuizProvider = ({ children }) => {
-  const [quiz, setQuiz] = useState(null); // Estado para armazenar o quiz selecionado
-  const [quizzes, setQuizzes] = useState([]); // Estado para armazenar a lista de quizzes
-  const [categorias, setCategorias] = useState([]); // Estado para armazenar a lista de quizzes
+  const [quiz, setQuiz] = useState(null);
+  const [quizzes, setQuizzes] = useState([]);
+  const [categorias, setCategorias] = useState([]);
+  const [tipos, setTipos] = useState([]);
   const { addressBack } = useAuth();
 
   useEffect(() => {
@@ -24,12 +25,21 @@ export const QuizProvider = ({ children }) => {
         const res = await axios.get(`${addressBack}/categories`);
         setCategorias(res.data);
       } catch (error) {
-        console.error("Erro ao carregar quizzes:", error);
+        console.error("Erro ao carregar categorias:", error);
+      }
+    };
+    const pegarTipos = async () => {
+      try {
+        const res = await axios.get(`${addressBack}/types`);
+        setTipos(res.data);
+      } catch (error) {
+        console.error("Erro ao carregar tipos:", error);
       }
     };
 
     pegarQuizzes();
     pegarCategorias();
+    pegarTipos();
   }, []); // Executa apenas uma vez ao montar o contexto
 
   const pegarQuestoes = async (quiz_id) => {

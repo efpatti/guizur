@@ -7,16 +7,18 @@ import NavBar from "./Components/NavBar";
 
 // Pages
 import Login from "./Pages/Account/Login";
-import Logado from "./Pages/Account/Logged";
+import Logged from "./Pages/Account/Logged";
 import NotFound from "./Pages/NotFound";
 import Adm from "./Pages/Adm";
+import Categories from "./Pages/Adm/Categories";
+import Types from "./Pages/Adm/Types";
 import Users from "./Pages/Adm/Users";
 import Quiz from "./Pages/PagesQuiz/Quiz";
 import Quizzes from "./Pages/PagesQuiz/Quizzes";
-import QuizEscolhido from "./Pages/PagesQuiz/Quizzes/QuizEscolhido";
-import MeuQuizEscolhido from "./Pages/PagesQuiz/Quiz/MeuQuizEscolhido";
-import CriarQuiz from "./Pages/PagesQuiz/CriarQuiz";
-import NovoQuiz from "./Pages/PagesQuiz/Quiz/NovoQuiz";
+import ChoosedQuiz from "./Pages/PagesQuiz/Quizzes/ChoosedQuiz";
+import MyChoosedQuiz from "./Pages/PagesQuiz/Quiz/MyChoosedQuiz";
+import CreateQuiz from "./Pages/PagesQuiz/CreateQuiz";
+import NewQuiz from "./Pages/PagesQuiz/Quiz/NewQuiz";
 
 // Utilities
 import PrivateRoutes from "./Utils/PrivateRoutes";
@@ -28,17 +30,19 @@ const routes = [
   {
     routeType: SharedRoutes,
     childrens: [
-      { path: "/logado", element: <Logado /> },
+      { path: "/logged", element: <Logged /> },
       { path: "/studio", element: <Quiz /> },
-      { path: "/studio/create/:tipoEscolhido", element: <NovoQuiz /> },
-      { path: "/meu-quiz-escolhido/:quiz_id", element: <MeuQuizEscolhido /> },
+      { path: "/studio/create/:tipoEscolhido", element: <NewQuiz /> },
+      { path: "/meu-quiz-escolhido/:quiz_id", element: <MyChoosedQuiz /> },
     ],
   },
   {
     routeType: PrivateRoutes,
     childrens: [
       { path: "/adm", element: <Adm /> },
-      { path: "/usuarios", element: <Users /> },
+      { path: "/adm/types", element: <Types /> },
+      { path: "/adm/categories", element: <Categories /> },
+      { path: "/adm/users", element: <Users /> },
     ],
   },
 ];
@@ -47,7 +51,7 @@ export function Router() {
   return (
     <>
       <NavBar />
-      <Box mt="64px" id="espaco-nav" filter="auto" transition="all 0.3s">
+      <Box pt="10rem" id="espaco-nav" filter="auto" transition="all 0.3s">
         <Routes>
           {routes.map((route, i) => (
             <Route key={i} element={<route.routeType />}>
@@ -59,8 +63,8 @@ export function Router() {
           <Route path="*" element={<NotFound />} />
           <Route path="/" element={<Login />} />
           <Route path="/discover" element={<Quizzes />} exact />
-          <Route path="/discover/:quiz_id" element={<QuizEscolhido />} />
-          <Route path="/criar-quiz" element={<CriarQuiz />} />
+          <Route path="/discover/:quiz_id" element={<ChoosedQuiz />} />
+          <Route path="/criar-quiz" element={<CreateQuiz />} />
         </Routes>
       </Box>
       {/* <Footer /> */}

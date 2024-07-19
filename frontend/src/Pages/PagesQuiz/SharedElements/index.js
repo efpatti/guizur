@@ -68,6 +68,7 @@ function TypesQuiz({ columns }) {
           rounded="xl"
           boxShadow="md"
           onClick={() => navigate(`/studio/create/${item.type}`)}
+          cursor="pointer"
         >
           <Stack direction="row">
             <Box>
@@ -76,6 +77,8 @@ function TypesQuiz({ columns }) {
                 size="sm"
                 rounded="3xl"
                 color={item.color_icon}
+                variant="none"
+                cursor=""
               >
                 {React.createElement(item.icon)}
               </Button>
