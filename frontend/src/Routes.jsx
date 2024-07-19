@@ -11,17 +11,18 @@ import Logado from "./Pages/Account/Logged";
 import NotFound from "./Pages/NotFound";
 import Adm from "./Pages/Adm";
 import Users from "./Pages/Users";
-import Quiz from "./Pages/Quiz";
-import Quizzes from "./Pages/Quizzes";
-import QuizEscolhido from "./Pages/Quizzes/QuizEscolhido";
+import Quiz from "./Pages/PagesQuiz/Quiz";
+import Quizzes from "./Pages/PagesQuiz/Quizzes";
+import QuizEscolhido from "./Pages/PagesQuiz/Quizzes/QuizEscolhido";
+import MeuQuizEscolhido from "./Pages/PagesQuiz/Quiz/MeuQuizEscolhido";
+import CriarQuiz from "./Pages/PagesQuiz/CriarQuiz";
+import NovoQuiz from "./Pages/PagesQuiz/Quiz/NovoQuiz";
 
 // Utilities
 import PrivateRoutes from "./Utils/PrivateRoutes";
 import SharedRoutes from "./Utils/SharedRoutes";
 
 import { Box } from "@chakra-ui/react";
-import MeuQuizEscolhido from "./Pages/Quiz/MeuQuizEscolhido";
-import CriarQuiz from "./Pages/CriarQuiz";
 
 const routes = [
   {
@@ -29,6 +30,7 @@ const routes = [
     childrens: [
       { path: "/logado", element: <Logado /> },
       { path: "/studio", element: <Quiz /> },
+      { path: "/studio/create/:tipoEscolhido", element: <NovoQuiz /> },
       { path: "/meu-quiz-escolhido/:quiz_id", element: <MeuQuizEscolhido /> },
     ],
   },

@@ -11,7 +11,7 @@ import {
   Textarea,
 } from "@chakra-ui/react";
 import { toast } from "react-toastify";
-import { useAuth } from "../../Hooks/useAuth";
+import { useAuth } from "../../../Hooks/useAuth";
 
 const CreateQuestion = ({ quizId }) => {
   const { addressBack } = useAuth();

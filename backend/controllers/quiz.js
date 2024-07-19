@@ -48,11 +48,11 @@ exports.pegarQuizPeloId = (req, res) => {
 };
 
 exports.adicionarQuiz = (req, res) => {
-  const { title, description, author_id } = req.body;
+  const { title, description, author_id, category, type } = req.body;
 
   const q =
-    "INSERT INTO quizzes (title, description, author_id) VALUES (?, ?, ?)";
-  const values = [title, description, author_id];
+    "INSERT INTO quizzes (title, description, author_id, category, type) VALUES (?, ?, ?, ?, ?)";
+  const values = [title, description, author_id, category, type];
 
   db.query(q, values, (err, result) => {
     if (err) {
@@ -68,11 +68,12 @@ exports.adicionarQuiz = (req, res) => {
 };
 
 exports.atualizarQuiz = (req, res) => {
-  const { title, description } = req.body;
+  const { title, description, category, type } = req.body;
   const quiz_id = req.params.idQuiz;
 
-  const q = "UPDATE quizzes SET title = ?, description = ? WHERE quiz_id = ?";
-  const values = [title, description, quiz_id];
+  const q =
+    "UPDATE quizzes SET title = ?, description = ?, category = ?, type = ? WHERE quiz_id = ?";
+  const values = [title, description, category, type, quiz_id];
 
   db.query(q, values, (err) => {
     if (err) return res.status(500).json({ error: err.message });

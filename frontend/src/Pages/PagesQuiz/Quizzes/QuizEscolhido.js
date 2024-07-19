@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import { Box, Text, Grid, Container, Flex, Stack } from "@chakra-ui/react";
 import { FaCheckCircle, FaTimesCircle } from "react-icons/fa";
 import { toast } from "react-toastify";
-import { useAuth } from "../../Hooks/useAuth";
+import { useAuth } from "../../../Hooks/useAuth";
 import { useQuizContext } from "./QuizContext"; // Importe useQuizContext se necessário
 
 const QuizEscolhido = () => {

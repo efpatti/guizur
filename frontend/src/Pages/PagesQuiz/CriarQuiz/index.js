@@ -3,7 +3,7 @@ import {
   HeadingText as Heading,
   TypesQuiz as Types,
   QuizzesDescription as QuizzesDesc,
-} from "../Quiz/SharedElements";
+} from "../SharedElements";
 
 function CriarQuiz() {
   return (

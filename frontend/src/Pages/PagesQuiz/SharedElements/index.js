@@ -15,10 +15,12 @@ import {
   FaPersonWalkingArrowLoopLeft as About,
   FaList as List,
 } from "react-icons/fa6";
+import { useNavigate } from "react-router-dom";
 function TypesQuiz({ columns }) {
   const typesQuiz = [
     {
       title: "Quiz de Certo e Errado",
+      type: "right_or_wrong",
       desc: "Só tem uma resposta certa para cada pergunta e é ótimo para testar os conhecimentos dos jogadores",
       color_bg_main: "blue.50",
       color_bg_icon: "blue.100",
@@ -27,6 +29,7 @@ function TypesQuiz({ columns }) {
     },
     {
       title: "Quiz de Personalidade",
+      type: "personality",
       desc: "Não há respostas certas. O resultado varia de acordo com a personalidade de cada jogador",
       color_bg_main: "orange.50",
       color_bg_icon: "orange.100",
@@ -35,6 +38,7 @@ function TypesQuiz({ columns }) {
     },
     {
       title: "Sobre Mim",
+      type: "about_me",
       desc: "Desafie seus amigos para saber quem sabe mais sobre você",
       color_bg_main: "green.50",
       color_bg_icon: "green.100",
@@ -43,6 +47,7 @@ function TypesQuiz({ columns }) {
     },
     {
       title: "Lista",
+      type: "list",
       desc: "Crie seu texto organizado por itens. Exemplo: Ranking",
       color_bg_main: "red.50",
       color_bg_icon: "red.100",
@@ -50,10 +55,20 @@ function TypesQuiz({ columns }) {
       icon: List,
     },
   ];
+
+  const navigate = useNavigate();
+
   return (
     <Grid templateColumns={`repeat(${columns}, 1fr)`} gap={3} p={3} mb={7}>
       {typesQuiz.map((item, i) => (
-        <Box key={i} bg={item.color_bg_main} p={5} rounded="xl" boxShadow="md">
+        <Box
+          key={i}
+          bg={item.color_bg_main}
+          p={5}
+          rounded="xl"
+          boxShadow="md"
+          onClick={() => navigate(`/studio/create/${item.type}`)}
+        >
           <Stack direction="row">
             <Box>
               <Button

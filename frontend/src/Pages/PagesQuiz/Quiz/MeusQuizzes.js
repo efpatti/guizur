@@ -10,9 +10,12 @@ import {
   InputGroup,
   InputLeftElement,
   Input,
+  SimpleGrid,
+  IconButton,
+  InputRightElement,
 } from "@chakra-ui/react";
 import { toast } from "react-toastify";
-import { useAuth } from "../../Hooks/useAuth";
+import { useAuth } from "../../../Hooks/useAuth";
 import { Link } from "react-router-dom";
 import {
   CiHeart as Heart,
@@ -20,13 +23,13 @@ import {
   CiHome as Home,
 } from "react-icons/ci";
 import { HiBars3BottomLeft as Filter } from "react-icons/hi2";
-import { FaSearch as Search } from "react-icons/fa";
-import { TypesQuiz as Types, HeadingText as Heading } from "./SharedElements";
+import { FaSearch as Search, FaWindowClose as Close } from "react-icons/fa";
+import { TypesQuiz as Types, HeadingText as Heading } from "../SharedElements";
 
 function MeusQuizzes() {
   const { addressBack, user } = useAuth();
   const [meusQuizzes, setMeusQuizzes] = useState([]);
-  const [selectedButton, setSelectedButton] = useState("Meus conteúdos"); // Estado para controlar o botão selecionado
+  const [selectedButton, setSelectedButton] = useState("Meus conteúdos");
 
   useEffect(() => {
     const fetchMeusQuizzes = async () => {
@@ -58,31 +61,46 @@ function MeusQuizzes() {
   const placeholderStyled = {
     color: "gray.600",
     fontWeight: "light",
-    borderBottom: "1px solid #CBD5E0", // Estilo do "border bottom"
+    borderBottom: "1px solid #CBD5E0",
     paddingBottom: "2px",
   };
 
   const handleButtonClick = (label) => {
-    setSelectedButton(label); // Define o botão clicado como selecionado
+    setSelectedButton(label);
   };
 
-  const homeSelected = selectedButton === "Meus conteúdos" ? true : false;
-  const saveSelected = selectedButton === "Salvos" ? true : false;
-  const heartSelected = selectedButton === "Curtidos" ? true : false;
+  const homeSelected = selectedButton === "Meus conteúdos";
+  const saveSelected = selectedButton === "Salvos";
+  const heartSelected = selectedButton === "Curtidos";
   const typesFilter = [
-    {
-      type: "Rascunho",
-    },
-    {
-      type: "Certo ou errado",
-    },
-    {
-      type: "Personalidade",
-    },
-    {
-      type: "Lista",
-    },
+    { type: "Rascunho" },
+    { type: "Certo ou errado" },
+    { type: "Personalidade" },
+    { type: "Lista" },
   ];
+
+  const [isFocused, setIsFocused] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const handleFocus = () => {
+    setIsFocused(true);
+  };
+
+  const handleBlur = () => {
+    setIsFocused(false);
+  };
+
+  const handleInputChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const clearSearch = () => {
+    setSearchQuery("");
+  };
+
+  const filteredMeusQuizzes = meusQuizzes.filter((quiz) =>
+    quiz.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
     <Box w="60%" margin="auto">
@@ -92,7 +110,6 @@ function MeusQuizzes() {
         <Stack direction="row" spacing={3} w="40%">
           <Button
             onClick={() => handleButtonClick("Meus conteúdos")}
-            key="Meus conteúdos"
             rounded="2xl"
             variant="none"
             border="1px"
@@ -110,7 +127,6 @@ function MeusQuizzes() {
           </Button>
           <Button
             onClick={() => handleButtonClick("Salvos")}
-            key="Salvos"
             rounded="2xl"
             variant="none"
             border="1px"
@@ -128,7 +144,6 @@ function MeusQuizzes() {
           </Button>
           <Button
             onClick={() => handleButtonClick("Curtidos")}
-            key="Curtidos"
             rounded="2xl"
             variant="none"
             border="1px"
@@ -156,9 +171,7 @@ function MeusQuizzes() {
               >
                 <option>Todos</option>
                 {typesFilter.map((item, i) => (
-                  <option key={i}>
-                    <Text decoration="Highlight">{item.type}</Text>
-                  </option>
+                  <option key={i}>{item.type}</option>
                 ))}
               </Select>
             </Stack>
@@ -173,29 +186,58 @@ function MeusQuizzes() {
           </Select>
         </Grid>
         <InputGroup
+          as={SimpleGrid}
+          columns="3"
+          spacing={10}
           bg="blackAlpha.50"
           rounded="xl"
-          alignItems="center" // Alinha verticalmente os itens dentro do InputGroup
-          justifyContent="center" // Centraliza os itens horizontalmente
+          alignItems="center"
+          justifyContent="center"
+          transition="all 0.2s"
+          onFocus={handleFocus}
+          onBlur={handleBlur}
+          _focus={{ outline: "none" }}
+          p={3}
         >
-          <InputLeftElement
-            pointerEvents="none"
-            children={<Search />}
-            rounded="xl"
-            h="full"
-            color="gray.400"
-            display="flex"
-            alignItems="center" // Alinha o ícone verticalmente ao centro
-            justifyContent="center" // Centraliza o ícone horizontalmente
+          <InputLeftElement h="full">
+            <IconButton
+              size="sm"
+              variant="none"
+              icon={<Search size="10px" />}
+              color="gray.400"
+              _hover={{ opacity: "70%" }}
+              _focus={{ outline: "none" }}
+              aria-label="Search"
+            />
+          </InputLeftElement>
+          <Input
+            id="customInput"
+            type="text"
+            placeholder="Pesquise um quiz"
+            variant="unstyled"
+            size="sm"
+            value={searchQuery}
+            onChange={handleInputChange}
           />
-          {/* Adicionando um Box com largura definida para criar o espaço */}
-          <Box width="2rem" />
-          <Input variant="unstyled" placeholder="Procurar conteúdo" p={3} />
+          {isFocused && (
+            <InputRightElement h="full">
+              <IconButton
+                variant="none"
+                size="sm"
+                color="gray.400"
+                _hover={{ opacity: "70%" }}
+                _focus={{ outline: "none" }}
+                aria-label="Clear"
+                onClick={clearSearch}
+                icon={<Close />}
+              />
+            </InputRightElement>
+          )}
         </InputGroup>
       </Stack>
       <Grid templateColumns="repeat(3, 1fr)" gap={2}>
         {homeSelected &&
-          meusQuizzes.map((quiz) => (
+          filteredMeusQuizzes.map((quiz) => (
             <Link
               as={Box}
               key={quiz.quiz_id}

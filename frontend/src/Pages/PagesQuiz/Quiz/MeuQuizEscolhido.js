@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import { useAuth } from "../../Hooks/useAuth";
+import { useAuth } from "../../../Hooks/useAuth";
 import { Box, Text } from "@chakra-ui/react";
 import CreateQuestion from "./CreateQuestion"; // Importe o componente CreateQuestion aqui
 
