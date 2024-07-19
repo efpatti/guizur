@@ -3,6 +3,7 @@ const cors = require("cors");
 const userRoutes = require("./routes/users");
 const quizRoutes = require("./routes/quizzes");
 const controllersRoutes = require("./routes/quizControllers");
+const categoryRoutes = require("./routes/categories");
 
 const app = express();
 const PORT = process.env.PORT || 8080; // Adicionando suporte a variáveis de ambiente para a porta
@@ -21,6 +22,7 @@ app.use(express.json());
 // Rotas
 app.use("/", userRoutes); // Específico para as rotas de usuários
 app.use("/", quizRoutes); // Específico para as rotas de quizzes
+app.use("/", categoryRoutes); // Específico para as rotas de quizzes
 app.use("/", controllersRoutes); // Específico para as rotas de controladores
 
 // Lidar com rotas não encontradas

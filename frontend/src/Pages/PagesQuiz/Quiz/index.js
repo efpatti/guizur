@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Stack } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import MeusQuizzes from "./MeusQuizzes";
 
 const Index = () => {

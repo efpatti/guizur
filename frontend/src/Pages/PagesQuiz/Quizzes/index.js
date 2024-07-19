@@ -5,8 +5,9 @@ import { useNavigate } from "react-router-dom";
 import { useQuizContext } from "./QuizContext";
 
 const Quizzes = () => {
-  const { setQuiz, quizzes } = useQuizContext(); // Utilizando quizzes do contexto global
+  const { setQuiz, quizzes, categorias } = useQuizContext(); // Utilizando quizzes do contexto global
   const [category, setCategory] = useState(null); // Inicialmente nenhum filtro de categoria
+  console.log(categorias);
 
   const navigate = useNavigate();
 
@@ -30,12 +31,17 @@ const Quizzes = () => {
     >
       <Box mt="4">
         <Button onClick={() => setCategory(null)}>Todos</Button>
-        <Button
-          onClick={() => setCategory(category === "Futebol" ? null : "Futebol")}
-          variant={category === "Futebol" ? "solid" : "outline"}
-        >
-          Futebol
-        </Button>
+        {categorias.map((item, i) => (
+          <Button
+            onClick={() =>
+              setCategory(category === item.category ? null : item.category)
+            }
+            variant={category === item.category ? "solid" : "outline"}
+          >
+            {item.category}
+          </Button>
+        ))}
+
         <Button
           onClick={() =>
             setCategory(category === "Basquete" ? null : "Basquete")

@@ -6,11 +6,13 @@ const {
   deletarQuiz,
   pegarQuizPeloAutor,
   pegarQuizPeloId,
+  pegarCategorias,
 } = require("../controllers/quiz");
 
 const router = express.Router();
 
 router.get("/quizzes", pegarQuizzes);
+router.get("/quizzes/categorias", pegarCategorias);
 router.get("/quizzes/autor", pegarQuizPeloAutor); // Rota para pegar quizzes por autor
 router.get("/quizzes/:quiz_id", pegarQuizPeloId); // Rota para pegar quizzes pelo Id
 

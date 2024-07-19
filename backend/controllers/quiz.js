@@ -9,6 +9,15 @@ exports.pegarQuizzes = (_, res) => {
   });
 };
 
+exports.pegarCategorias = (_, res) => {
+  const q = "SELECT category FROM quizzes";
+
+  db.query(q, (err, data) => {
+    if (err) return res.status(500).json({ error: err.message });
+    return res.status(200).json(data);
+  });
+};
+
 exports.pegarQuizPeloAutor = (req, res) => {
   const author_id = req.query.author_id;
 

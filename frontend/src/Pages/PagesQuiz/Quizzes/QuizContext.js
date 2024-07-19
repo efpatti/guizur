@@ -7,6 +7,7 @@ const QuizContext = createContext();
 export const QuizProvider = ({ children }) => {
   const [quiz, setQuiz] = useState(null); // Estado para armazenar o quiz selecionado
   const [quizzes, setQuizzes] = useState([]); // Estado para armazenar a lista de quizzes
+  const [categorias, setCategorias] = useState([]); // Estado para armazenar a lista de quizzes
   const { addressBack } = useAuth();
 
   useEffect(() => {
@@ -18,8 +19,17 @@ export const QuizProvider = ({ children }) => {
         console.error("Erro ao carregar quizzes:", error);
       }
     };
+    const pegarCategorias = async () => {
+      try {
+        const res = await axios.get(`${addressBack}/quizzes/categorias`);
+        setCategorias(res.data);
+      } catch (error) {
+        console.error("Erro ao carregar quizzes:", error);
+      }
+    };
 
     pegarQuizzes();
+    pegarCategorias();
   }, []); // Executa apenas uma vez ao montar o contexto
 
   const pegarQuestoes = async (quiz_id) => {
@@ -48,7 +58,16 @@ export const QuizProvider = ({ children }) => {
   };
 
   return (
-    <QuizContext.Provider value={{ quiz, setQuiz, quizzes, pegarQuestoes }}>
+    <QuizContext.Provider
+      value={{
+        quiz,
+        setQuiz,
+        quizzes,
+        pegarQuestoes,
+        setCategorias,
+        categorias,
+      }}
+    >
       {children}
     </QuizContext.Provider>
   );
