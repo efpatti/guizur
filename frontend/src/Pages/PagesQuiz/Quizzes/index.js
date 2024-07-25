@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Flex,
   Box,
@@ -7,8 +7,8 @@ import {
   SimpleGrid,
   Grid,
   Stack,
+  Spinner,
 } from "@chakra-ui/react";
-
 import { useNavigate } from "react-router-dom";
 import { useQuizContext } from "../SharedElements/QuizContext";
 import { useAuth } from "../../../Hooks/useAuth";
@@ -21,6 +21,16 @@ const styleButtonFilterSelected = {
   color: "blue.600",
   fontWeight: "extralight",
 };
+
+const styleButtonFilter = {
+  borderRadius: "10rem",
+  variant: "solid",
+  border: "1px",
+  borderColor: "gray.200",
+  color: "gray.800",
+  fontWeight: "extralight",
+};
+
 const styleButtonProfile = {
   borderRadius: "lg",
   variant: "solid",
@@ -31,30 +41,47 @@ const styleButtonProfile = {
   fontWeight: "extralight",
 };
 
+// Função para simular um atraso
+const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
 const Quizzes = () => {
-  const { setQuiz, quizzes, categorias, tipos } = useQuizContext();
-  const [filter, setFilter] = useState(null); // State to manage the active filter
-  const [activeTab, setActiveTab] = useState("todos"); // State to manage active tab
+  const { setQuiz, quizzes, setQuizzes, categorias, tipos } = useQuizContext();
+  const [filter, setFilter] = useState(null);
+  const [activeTab, setActiveTab] = useState("todos");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const styleButtonFilter = {
-    borderRadius: "10rem",
-    variant: "solid",
-    border: "1px",
-    borderColor: "gray.300",
-    color: "gray.600",
-    fontWeight: "light",
-  };
+  useEffect(() => {
+    const fetchQuizzes = async () => {
+      setLoading(true);
+
+      // Simular um atraso de 1 segundo
+      await delay(500);
+
+      try {
+        const response = await fetch(
+          `/api/quizzes?category=${filter}&_limit=10`
+        ); // Ajuste o endpoint conforme necessário
+        const data = await response.json();
+        setQuizzes(data);
+      } catch (error) {
+        console.error("Erro ao buscar quizzes:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchQuizzes();
+  }, [filter, setQuizzes]);
 
   const handleQuizClick = (quiz_id) => {
     setQuiz(quiz_id);
     navigate(`/discover/${quiz_id}`);
   };
 
-  // Filtragem de quizzes baseada no estado 'filter'
-  const filteredQuizzes = filter
-    ? quizzes.filter((quiz) => quiz.category === filter || quiz.type === filter)
-    : quizzes;
+  const filteredQuizzes = quizzes.filter((quiz) =>
+    filter ? quiz.category === filter || quiz.type === filter : true
+  );
 
   return (
     <Flex w="100%" mb={10} justify="center" align="center">
@@ -74,7 +101,7 @@ const Quizzes = () => {
                     : styleButtonFilter
                 }
                 size="sm"
-                width="100%" // Ensures all buttons have the same width
+                width="100%"
               >
                 Todos
               </Button>
@@ -87,7 +114,7 @@ const Quizzes = () => {
                     : styleButtonFilter
                 }
                 size="sm"
-                width="100%" // Ensures all buttons have the same width
+                width="100%"
               >
                 Categorias
               </Button>
@@ -100,7 +127,7 @@ const Quizzes = () => {
                     : styleButtonFilter
                 }
                 size="sm"
-                width="100%" // Ensures all buttons have the same width
+                width="100%"
               >
                 Tipos
               </Button>
@@ -126,7 +153,7 @@ const Quizzes = () => {
                       : styleButtonFilter
                   }
                   size="sm"
-                  width="100%" // Ensures all buttons have the same width
+                  width="100%"
                 >
                   Todos
                 </Button>
@@ -144,7 +171,7 @@ const Quizzes = () => {
                         : styleButtonFilter
                     }
                     size="sm"
-                    width="100%" // Ensures all buttons have the same width
+                    width="100%"
                   >
                     {item.name} (
                     {quizzes.filter((q) => q.category === item.name).length})
@@ -173,7 +200,7 @@ const Quizzes = () => {
                       : styleButtonFilter
                   }
                   size="sm"
-                  width="100%" // Ensures all buttons have the same width
+                  width="100%"
                 >
                   Todos
                 </Button>
@@ -191,7 +218,7 @@ const Quizzes = () => {
                         : styleButtonFilter
                     }
                     size="sm"
-                    width="100%" // Ensures all buttons have the same width
+                    width="100%"
                   >
                     {item.name === "Quiz de Certo e Errado"
                       ? "Quiz"
@@ -202,36 +229,42 @@ const Quizzes = () => {
                 ))}
               </Grid>
             )}
-            <SimpleGrid columns={3} gap={4} mt="4" w="100%">
-              {filteredQuizzes.length > 0 ? (
-                filteredQuizzes.map((quiz, i) => (
-                  <Box
-                    key={i}
-                    p="4"
-                    borderWidth="1px"
-                    borderRadius="md"
-                    shadow="md"
-                    cursor="pointer"
-                    onClick={() => handleQuizClick(quiz.quiz_id)}
-                    _hover={{ shadow: "lg" }}
-                    height="300px"
-                    position="relative"
-                  >
-                    <Text fontSize="xl" fontWeight="semibold" mb={2}>
-                      {quiz.title}
-                    </Text>
-                    <Text fontSize="sm" color="gray.600" mb="2">
-                      {quiz.description}
-                    </Text>
-                    <Box position="absolute" bottom="4" left="4">
-                      <Text fontSize="sm">Categoria: {quiz.category}</Text>
+            {loading ? (
+              <Flex justify="center" align="center" height="300px">
+                <Spinner size="xl" />
+              </Flex>
+            ) : (
+              <SimpleGrid columns={3} gap={4} mt="4" w="100%">
+                {filteredQuizzes.length > 0 ? (
+                  filteredQuizzes.map((quiz, i) => (
+                    <Box
+                      key={i}
+                      p="4"
+                      borderWidth="1px"
+                      borderRadius="md"
+                      shadow="md"
+                      cursor="pointer"
+                      onClick={() => handleQuizClick(quiz.quiz_id)}
+                      _hover={{ shadow: "lg" }}
+                      height="300px"
+                      position="relative"
+                    >
+                      <Text fontSize="xl" fontWeight="semibold" mb={2}>
+                        {quiz.title}
+                      </Text>
+                      <Text fontSize="sm" color="gray.600" mb="2">
+                        {quiz.description}
+                      </Text>
+                      <Box position="absolute" bottom="4" left="4">
+                        <Text fontSize="sm">Categoria: {quiz.category}</Text>
+                      </Box>
                     </Box>
-                  </Box>
-                ))
-              ) : (
-                <Text>Nenhum quiz encontrado.</Text>
-              )}
-            </SimpleGrid>
+                  ))
+                ) : (
+                  <Text>Nenhum quiz encontrado.</Text>
+                )}
+              </SimpleGrid>
+            )}
           </Stack>
         </Box>
         <Box>

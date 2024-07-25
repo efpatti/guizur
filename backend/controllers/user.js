@@ -4,10 +4,16 @@ const jwt = require("jsonwebtoken");
 
 const jwtSecret = process.env.JWT_SECRET || "sua_chave_secreta_aqui";
 
-exports.pegarUsuarios = (_, res) => {
-  const q = "SELECT * FROM cadastrousuario";
+exports.pegarUsuarios = (req, res) => {
+  let { _limit } = req.query;
+  if (!_limit) {
+    _limit = 10; // Definindo um valor padrão para _limit, caso não seja fornecido
+  } else {
+    _limit = parseInt(_limit); // Convertendo para número inteiro, se necessário
+  }
 
-  db.query(q, (err, data) => {
+  const q = `SELECT * FROM cadastrousuario LIMIT ?`;
+  db.query(q, [_limit], (err, data) => {
     if (err) return res.status(500).json({ error: err.message });
     return res.status(200).json(data);
   });

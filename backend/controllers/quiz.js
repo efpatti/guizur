@@ -1,12 +1,9 @@
 const db = require("../db.js");
+const { pegarQuizComFiltros } = require("./dbUtils.js");
 
 exports.pegarQuizzes = (req, res) => {
   let { _limit } = req.query;
-  if (!_limit) {
-    _limit = 10; // Definindo um valor padrão para _limit, caso não seja fornecido
-  } else {
-    _limit = parseInt(_limit); // Convertendo para número inteiro, se necessário
-  }
+  _limit = _limit ? parseInt(_limit) : 10;
 
   const q = `SELECT * FROM quizzes LIMIT ?`;
   db.query(q, [_limit], (err, data) => {
@@ -17,7 +14,7 @@ exports.pegarQuizzes = (req, res) => {
 
 exports.pegarQuizPeloAutor = (req, res) => {
   const author_id = req.query.author_id;
-  let limit = req.query._limit || 10; // Defina um limite padrão, se não especificado
+  let limit = req.query._limit || 10;
 
   const sql = "SELECT * FROM quizzes WHERE author_id = ? LIMIT ?";
   db.query(sql, [author_id, limit], (err, result) => {
@@ -33,6 +30,20 @@ exports.pegarQuizPeloAutor = (req, res) => {
       }
     }
   });
+};
+
+exports.pegarQuizPelaCategoria = (req, res) => {
+  req.query.category = req.query.category || null;
+  req.query.type = null;
+  req.query.author_id = null;
+  pegarQuizComFiltros(req, res, "category");
+};
+
+exports.pegarQuizPeloTipo = (req, res) => {
+  req.query.type = req.query.type || null;
+  req.query.category = null;
+  req.query.author_id = null;
+  pegarQuizComFiltros(req, res, "type");
 };
 
 exports.pegarQuizPeloId = (req, res) => {

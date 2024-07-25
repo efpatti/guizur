@@ -3,16 +3,21 @@ const db = require("../db.js");
 // Pegar todas as questões de um quiz específico
 exports.pegarQuestoes = (req, res) => {
   const quiz_id = req.params.quiz_id;
-  const q = `
-     SELECT q.question_id, q.question_text,
-            a.answer_id, a.answer_text, a.is_correct
-     FROM questions q
-     LEFT JOIN answers a ON q.question_id = a.question_id
-     WHERE q.quiz_id = ?
-     ORDER BY q.question_id, a.answer_id
-   `;
+  const { _limit } = req.query; // Obtém o limite da query string
+  const limit = _limit ? parseInt(_limit, 10) : 10; // Define o limite padrão para 10
 
-  db.query(q, [quiz_id], (err, data) => {
+  // Atualiza a consulta SQL para incluir o limite
+  const q = `
+    SELECT q.question_id, q.question_text,
+           a.answer_id, a.answer_text, a.is_correct
+    FROM questions q
+    LEFT JOIN answers a ON q.question_id = a.question_id
+    WHERE q.quiz_id = ?
+    ORDER BY q.question_id, a.answer_id
+    LIMIT ?
+  `;
+
+  db.query(q, [quiz_id, limit], (err, data) => {
     if (err) return res.status(500).json({ error: err.message });
 
     // Organiza os dados em um formato mais estruturado para cada questão

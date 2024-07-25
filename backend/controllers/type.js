@@ -1,9 +1,15 @@
 const db = require("../db.js");
 
-exports.pegarTipos = (_, res) => {
-  const q = "SELECT * FROM types";
+exports.pegarTipos = (req, res) => {
+  let { _limit } = req.query;
+  if (!_limit) {
+    _limit = 10; // Definindo um valor padrão para _limit, caso não seja fornecido
+  } else {
+    _limit = parseInt(_limit); // Convertendo para número inteiro, se necessário
+  }
 
-  db.query(q, (err, data) => {
+  const q = `SELECT * FROM types LIMIT ?`;
+  db.query(q, [_limit], (err, data) => {
     if (err) return res.status(500).json({ error: err.message });
     return res.status(200).json(data);
   });
