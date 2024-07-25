@@ -1,14 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
-  useDisclosure,
   Button,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
-  ModalFooter,
   Box,
   Flex,
   Text,
@@ -19,15 +11,26 @@ import {
   InputLeftElement,
 } from "@chakra-ui/react";
 import { FaHome, FaPlusCircle, FaCompass, FaSearch } from "react-icons/fa";
-import Profile from "../../Pages/Account/Profile";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../Hooks/useAuth";
 
 function NavBar() {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [page, setPage] = useState(""); // State to track current page
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
 
+  useEffect(() => {
+    // Update page state with current pathname on component mount
+    setPage(window.location.pathname);
+  }, []);
+
+  // Function to update page state when navigation changes
+  const handleNavigation = (href) => {
+    setPage(href); // Update page state with the new pathname
+    navigate(href); // Navigate to the new page
+  };
+
+  // Navigation links configuration
   const navLinks = [
     {
       name: "Home",
@@ -37,7 +40,7 @@ function NavBar() {
     {
       name: "Criar",
       icon: FaPlusCircle,
-      href: isAuthenticated ? "studio" : "criar-quiz",
+      href: isAuthenticated ? "/studio" : "/criar-quiz",
     },
     {
       name: "Explorar",
@@ -70,12 +73,23 @@ function NavBar() {
                   key={i}
                   w="full"
                   size="md"
-                  leftIcon={<item.icon />}
+                  leftIcon={
+                    <item.icon
+                      style={{
+                        color:
+                          page === item.href &&
+                          item.href === "/logado" &&
+                          "blue.500",
+                      }}
+                    />
+                  }
                   variant="none"
                   _hover={{ color: "blue.600" }}
+                  color={page === item.href && "blue.700"}
+                  bg={page === item.href ? "gray.50" : "transparent"}
                   rounded="lg"
                   mr={3}
-                  onClick={() => navigate(item.href)}
+                  onClick={() => handleNavigation(item.href)}
                 >
                   {item.name}
                 </Button>
@@ -124,30 +138,13 @@ function NavBar() {
                 color="blue.600"
                 border="1px"
                 borderColor="gray.200"
-                onClick={() => navigate("/")}
+                onClick={() => handleNavigation("/")}
               >
                 Entrar
               </Button>
             </Grid>
           </Grid>
         </Flex>
-
-        <Modal isOpen={isOpen} onClose={onClose}>
-          <ModalOverlay />
-          <ModalContent>
-            <ModalHeader>Perfil do Usuário</ModalHeader>
-            <ModalCloseButton />
-            <ModalBody>
-              <Profile />
-            </ModalBody>
-            <ModalFooter>
-              <Button colorScheme="blue" mr={3}>
-                Salvar
-              </Button>
-              <Button onClick={onClose}>Cancelar</Button>
-            </ModalFooter>
-          </ModalContent>
-        </Modal>
       </Box>
     </Box>
   );

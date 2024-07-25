@@ -76,6 +76,7 @@ export const QuizProvider = ({ children }) => {
         pegarQuestoes,
         setCategorias,
         categorias,
+        tipos,
       }}
     >
       {children}

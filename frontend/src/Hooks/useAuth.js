@@ -1,5 +1,6 @@
 import React, { createContext, useState, useContext, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
+import axios from "axios";
 
 const AuthContext = createContext();
 
@@ -8,6 +9,7 @@ export const useAuth = () => useContext(AuthContext);
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
+  const [users, setUsers] = useState(null);
   const [userType, setUserType] = useState(null);
   const [loading, setLoading] = useState(true); // Adicionando estado de carregamento
   const [isActive, setIsActive] = useState(false);
@@ -28,7 +30,16 @@ export const AuthProvider = ({ children }) => {
         setUserType(getUserType(decodedToken)); // Aqui você define o userType
       }
     }
+    const getUsers = async () => {
+      try {
+        const res = await axios.get(`${addressBack}/usuarios`);
+        setUsers(res.data);
+      } catch (error) {
+        console.error("Erro ao carregar tipos:", error);
+      }
+    };
     setLoading(false); // Marca o carregamento como concluído
+    getUsers();
   }, []);
 
   const getUserType = (decodedToken) => {
@@ -82,6 +93,7 @@ export const AuthProvider = ({ children }) => {
         sideBarClicada,
         setSideBarClicada,
         addressBack,
+        users,
       }}
     >
       {!loading && children}{" "}

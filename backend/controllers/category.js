@@ -1,8 +1,10 @@
 const db = require("../db.js");
 
-exports.pegarCategorias = (_, res) => {
-  const q = "SELECT * FROM categories";
+exports.pegarCategorias = (req, res) => {
+  let { _limit } = req.query;
+  _limit = _limit ? parseInt(_limit, 10) : 10; // Definindo o valor padrão para _limit, se não fornecido
 
+  const q = `SELECT * FROM categories LIMIT ${_limit}`; // Incluindo o limite diretamente na string SQL
   db.query(q, (err, data) => {
     if (err) return res.status(500).json({ error: err.message });
     return res.status(200).json(data);

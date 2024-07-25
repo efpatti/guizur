@@ -16,58 +16,22 @@ import {
   FaList as List,
 } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
+import { useQuizContext } from "./QuizContext";
 function TypesQuiz({ columns }) {
-  const typesQuiz = [
-    {
-      title: "Quiz de Certo e Errado",
-      type: "right_or_wrong",
-      desc: "Só tem uma resposta certa para cada pergunta e é ótimo para testar os conhecimentos dos jogadores",
-      color_bg_main: "blue.50",
-      color_bg_icon: "blue.100",
-      color_icon: "blue",
-      icon: Clover,
-    },
-    {
-      title: "Quiz de Personalidade",
-      type: "personality",
-      desc: "Não há respostas certas. O resultado varia de acordo com a personalidade de cada jogador",
-      color_bg_main: "orange.50",
-      color_bg_icon: "orange.100",
-      color_icon: "orange",
-      icon: Person,
-    },
-    {
-      title: "Sobre Mim",
-      type: "about_me",
-      desc: "Desafie seus amigos para saber quem sabe mais sobre você",
-      color_bg_main: "green.50",
-      color_bg_icon: "green.100",
-      color_icon: "green",
-      icon: About,
-    },
-    {
-      title: "Lista",
-      type: "list",
-      desc: "Crie seu texto organizado por itens. Exemplo: Ranking",
-      color_bg_main: "red.50",
-      color_bg_icon: "red.100",
-      color_icon: "red",
-      icon: List,
-    },
-  ];
+  const { tipos } = useQuizContext();
 
   const navigate = useNavigate();
 
   return (
-    <Grid templateColumns={`repeat(${columns}, 1fr)`} gap={3} p={3} mb={7}>
-      {typesQuiz.map((item, i) => (
+    <Grid templateColumns={`repeat(${columns}, 1fr)`} gap={4} p={5} mb={7}>
+      {tipos.map((item, i) => (
         <Box
           key={i}
           bg={item.color_bg_main}
           p={5}
           rounded="xl"
           boxShadow="md"
-          onClick={() => navigate(`/studio/create/${item.type}`)}
+          onClick={() => navigate(`/studio/create/${item.code}`)}
           cursor="pointer"
         >
           <Stack direction="row">
@@ -80,12 +44,20 @@ function TypesQuiz({ columns }) {
                 variant="none"
                 cursor=""
               >
-                {React.createElement(item.icon)}
+                {React.createElement(
+                  item.icon === "Clover"
+                    ? Clover
+                    : item.icon === "Person"
+                    ? Person
+                    : item.icon === "About"
+                    ? About
+                    : List
+                )}
               </Button>
             </Box>
             <Box textAlign="start">
-              <Text fontWeight="semibold">{item.title}</Text>
-              <Text fontSize="xs" fontWeight="light">
+              <Text fontWeight="semibold">{item.name}</Text>
+              <Text fontSize="sm" fontWeight="light">
                 {item.desc}
               </Text>
             </Box>

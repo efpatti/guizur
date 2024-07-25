@@ -1,18 +1,15 @@
 const db = require("../db.js");
 
-exports.pegarQuizzes = (_, res) => {
-  const q = "SELECT * FROM quizzes";
+exports.pegarQuizzes = (req, res) => {
+  let { _limit } = req.query;
+  if (!_limit) {
+    _limit = 10; // Definindo um valor padrão para _limit, caso não seja fornecido
+  } else {
+    _limit = parseInt(_limit); // Convertendo para número inteiro, se necessário
+  }
 
-  db.query(q, (err, data) => {
-    if (err) return res.status(500).json({ error: err.message });
-    return res.status(200).json(data);
-  });
-};
-
-exports.pegarCategorias = (_, res) => {
-  const q = "SELECT category FROM quizzes";
-
-  db.query(q, (err, data) => {
+  const q = `SELECT * FROM quizzes LIMIT ?`;
+  db.query(q, [_limit], (err, data) => {
     if (err) return res.status(500).json({ error: err.message });
     return res.status(200).json(data);
   });
@@ -20,9 +17,10 @@ exports.pegarCategorias = (_, res) => {
 
 exports.pegarQuizPeloAutor = (req, res) => {
   const author_id = req.query.author_id;
+  let limit = req.query._limit || 10; // Defina um limite padrão, se não especificado
 
-  const sql = "SELECT * FROM quizzes WHERE author_id = ?";
-  db.query(sql, [author_id], (err, result) => {
+  const sql = "SELECT * FROM quizzes WHERE author_id = ? LIMIT ?";
+  db.query(sql, [author_id, limit], (err, result) => {
     if (err) {
       res.status(500).json({ error: err.message });
     } else {

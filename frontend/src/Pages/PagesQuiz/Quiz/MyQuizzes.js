@@ -245,6 +245,7 @@ function MyQuizzes() {
               display="flex"
               alignItems="center"
               justifyContent="center"
+              mb="10rem"
             >
               <Box
                 key={quiz.quiz_id}

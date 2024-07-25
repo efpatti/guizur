@@ -79,7 +79,7 @@ const CreateQuestion = ({ quizId }) => {
   };
 
   return (
-    <Box>
+    <Box mb="10rem">
       <form onSubmit={handleSubmit}>
         <FormControl>
           <FormLabel>Texto da Questão</FormLabel>
