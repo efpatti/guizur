@@ -14,6 +14,7 @@ import {
 import { FaTrash, FaEdit } from "react-icons/fa";
 import PropTypes from "prop-types";
 import { useAuth } from "../../../Hooks/useAuth";
+import ImageViewer from "../../Images/ImageViewer";
 
 const Grid = ({ usuarios, setUsuarios, setAoEditarUsuario }) => {
   const toast = useToast();
@@ -63,6 +64,7 @@ const Grid = ({ usuarios, setUsuarios, setAoEditarUsuario }) => {
               <Th>Estado</Th>
               <Th>Tipo</Th>
               <Th>Senha</Th>
+              <Th>Imagem</Th>
               <Th></Th>
               <Th></Th>
             </Tr>
@@ -81,6 +83,9 @@ const Grid = ({ usuarios, setUsuarios, setAoEditarUsuario }) => {
                 <Td>{item.estado}</Td>
                 <Td>{item.tipo}</Td>
                 <Td>{item.senha}</Td>
+                <Td>
+                  <ImageViewer idUsuario={item.idUsuario} />
+                </Td>
                 <Td>
                   <Icon
                     as={FaEdit}

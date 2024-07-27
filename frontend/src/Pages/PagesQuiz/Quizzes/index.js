@@ -12,6 +12,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useQuizContext } from "../SharedElements/QuizContext";
 import { useAuth } from "../../../Hooks/useAuth";
+import ImageViewer from "../../Images/ImageViewer";
 
 const styleButtonFilterSelected = {
   borderRadius: "10rem",
@@ -137,26 +138,6 @@ const Quizzes = () => {
                 templateColumns="repeat(auto-fit, minmax(120px, 1fr))"
                 gap={3}
               >
-                <Button
-                  onClick={() => {
-                    setFilter(null);
-                    setActiveTab("todos");
-                  }}
-                  bg={
-                    filter === null && activeTab === "todos"
-                      ? "blue.50"
-                      : "transparent"
-                  }
-                  sx={
-                    filter === null && activeTab === "todos"
-                      ? styleButtonFilterSelected
-                      : styleButtonFilter
-                  }
-                  size="sm"
-                  width="100%"
-                >
-                  Todos
-                </Button>
                 {categorias.map((item, i) => (
                   <Button
                     key={i}
@@ -184,26 +165,6 @@ const Quizzes = () => {
                 templateColumns="repeat(auto-fit, minmax(120px, 1fr))"
                 gap={3}
               >
-                <Button
-                  onClick={() => {
-                    setFilter(null);
-                    setActiveTab("todos");
-                  }}
-                  bg={
-                    filter === null && activeTab === "todos"
-                      ? "blue.50"
-                      : "transparent"
-                  }
-                  sx={
-                    filter === null && activeTab === "todos"
-                      ? styleButtonFilterSelected
-                      : styleButtonFilter
-                  }
-                  size="sm"
-                  width="100%"
-                >
-                  Todos
-                </Button>
                 {tipos.map((item, i) => (
                   <Button
                     key={i}
@@ -286,11 +247,12 @@ const Profiles = () => {
         <Grid gap={5} mt={3}>
           {users.map((item, i) => (
             <Grid
-              templateColumns="repeat(2, 1fr)"
+              templateColumns="repeat(3, 1fr)"
               key={i}
               gap={3}
               placeItems="start"
             >
+              <ImageViewer idUsuario={item.idUsuario} pad={3} />
               <Box as={Grid} placeItems="start">
                 <Text fontWeight="semibold">{item.nome}</Text>
                 <Text fontSize="sm" fontWeight="light" color="gray.600">

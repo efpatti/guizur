@@ -5,6 +5,8 @@ const quizRoutes = require("./routes/quizzes");
 const controllersRoutes = require("./routes/quizControllers");
 const categoryRoutes = require("./routes/categories");
 const typeRoutes = require("./routes/types");
+const imageRoutes = require("./routes/images");
+const bodyParser = require("body-parser");
 
 const app = express();
 const PORT = process.env.PORT || 8080; // Adicionando suporte a variáveis de ambiente para a porta
@@ -19,6 +21,9 @@ app.use(
 
 // Middleware para lidar com dados JSON
 app.use(express.json());
+// Middleware
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // Rotas
 app.use("/", userRoutes); // Específico para as rotas de usuários
@@ -26,6 +31,8 @@ app.use("/", quizRoutes); // Específico para as rotas de quizzes
 app.use("/", categoryRoutes); // Específico para as rotas de categorias
 app.use("/", typeRoutes); // Específico para as rotas de tipos
 app.use("/", controllersRoutes); // Específico para as rotas de controladores
+// Usar as rotas de imagem
+app.use("/api", imageRoutes);
 
 // Lidar com rotas não encontradas
 app.use((req, res, next) => {

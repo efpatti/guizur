@@ -19,6 +19,7 @@ import {
 import { toast } from "react-toastify";
 import { FaCheck } from "react-icons/fa";
 import { useAuth } from "../../../Hooks/useAuth";
+import ImageUpload from "../../Images/ImageUpload";
 
 const Form = ({ pegarUsuarios, aoEditarUsuario, setAoEditarUsuario }) => {
   const { addressBack } = useAuth();
@@ -30,11 +31,8 @@ const Form = ({ pegarUsuarios, aoEditarUsuario, setAoEditarUsuario }) => {
     cidade: "",
     estado: "",
   });
-
-  // Adicione o estado para armazenar o status da validação do CPF
   const [cpfValido, setCpfValido] = useState(false);
-
-  // Adicione uma função para validar o CPF quando o campo de CPF perder o foco
+  const [image, setImage] = useState(null);
 
   const handleCpfCheck = () => {
     const cpf = ref.current.cpf.value;
@@ -64,7 +62,6 @@ const Form = ({ pegarUsuarios, aoEditarUsuario, setAoEditarUsuario }) => {
 
     const usuario = ref.current;
 
-    // Verifique se todos os campos estão preenchidos
     const campos = [
       "nome",
       "email",
@@ -97,6 +94,7 @@ const Form = ({ pegarUsuarios, aoEditarUsuario, setAoEditarUsuario }) => {
     };
 
     try {
+      // Envio dos dados do usuário
       const response = await axios.post(
         aoEditarUsuario
           ? `${addressBack}/usuarios/${aoEditarUsuario.idUsuario}`
@@ -105,7 +103,17 @@ const Form = ({ pegarUsuarios, aoEditarUsuario, setAoEditarUsuario }) => {
       );
       console.log("Resposta:", response.data);
       toast.success(response.data);
-      // Limpe os campos e atualize a lista de usuários
+
+      // Envio da imagem se existir
+      if (image) {
+        await axios.post(`${addressBack}/api/upload`, {
+          imageData: image.data,
+          mimeType: image.mimeType,
+        });
+        toast.success("Imagem enviada com sucesso!");
+      }
+
+      // Limpeza dos campos
       campos.forEach((campo) => (usuario[campo].value = ""));
       setAoEditarUsuario(null);
       pegarUsuarios();
@@ -139,6 +147,7 @@ const Form = ({ pegarUsuarios, aoEditarUsuario, setAoEditarUsuario }) => {
     setResetAppear(false);
     setCpfValido(false);
     setCheckedCep(false);
+    setImage(null); // Limpar imagem após envio
   };
 
   const validarCPF = (cpf) => {
@@ -148,19 +157,16 @@ const Form = ({ pegarUsuarios, aoEditarUsuario, setAoEditarUsuario }) => {
       toast.warn("CPF inválido");
     };
 
-    // Verifica se o CPF está vazio
     if (cpf === "") {
       cpfErro();
       return false;
     }
 
-    // Verifica se o CPF possui 11 dígitos e não é uma sequência repetida
     if (cpf.length !== 11 || /^(\d)\1{10}$/.test(cpf)) {
       cpfErro();
       return false;
     }
 
-    // Valida 1o digito
     let add = 0;
     for (let i = 0; i < 9; i++) {
       add += parseInt(cpf.charAt(i)) * (10 - i);
@@ -172,7 +178,6 @@ const Form = ({ pegarUsuarios, aoEditarUsuario, setAoEditarUsuario }) => {
       return false;
     }
 
-    // Valida 2o digito
     add = 0;
     for (let i = 0; i < 10; i++) {
       add += parseInt(cpf.charAt(i)) * (11 - i);
@@ -184,7 +189,6 @@ const Form = ({ pegarUsuarios, aoEditarUsuario, setAoEditarUsuario }) => {
       return false;
     }
 
-    // CPF válido
     return true;
   };
 
@@ -220,6 +224,10 @@ const Form = ({ pegarUsuarios, aoEditarUsuario, setAoEditarUsuario }) => {
         <FormControl>
           <FormLabel>Telefone</FormLabel>
           <Input name="telefone" type="phone" defaultValue="" />
+        </FormControl>
+        <FormControl>
+          <FormLabel>Imagem</FormLabel>
+          <ImageUpload onImageSelect={(image) => setImage(image)} />
         </FormControl>
         <FormControl>
           <FormLabel>CPF</FormLabel>
@@ -326,7 +334,6 @@ const Form = ({ pegarUsuarios, aoEditarUsuario, setAoEditarUsuario }) => {
   );
 };
 
-// Definindo PropTypes para validar as props
 Form.propTypes = {
   pegarUsuarios: PropTypes.func.isRequired,
   aoEditarUsuario: PropTypes.object,
