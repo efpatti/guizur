@@ -169,7 +169,7 @@ const Quizzes = () => {
                   <Grid
                     templateColumns="repeat(auto-fit, minmax(100px, 1fr))"
                     gap={3}
-                    w="50%"
+                    w={isLargerThanMD ? "50%" : "80%"}
                   >
                     {categorias.map((item, i) => (
                       <Button
@@ -198,7 +198,7 @@ const Quizzes = () => {
                   <Grid
                     templateColumns="repeat(auto-fit, minmax(100px, 1fr))"
                     gap={3}
-                    w="50%"
+                    w={isLargerThanMD ? "50%" : "80%"}
                   >
                     {tipos.map((item, i) => (
                       <Button
@@ -289,7 +289,6 @@ const Quizzes = () => {
                               </Text>
                             </Button>
                           </Box>
-
                           <Stack
                             position="absolute"
                             bottom="4"
