@@ -9,6 +9,7 @@ import {
   Stack,
   Spinner,
   useMediaQuery,
+  Image,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { useQuizContext } from "../SharedElements/QuizContext";
@@ -241,7 +242,6 @@ const Quizzes = () => {
                       filteredQuizzes.map((quiz, i) => (
                         <Box
                           key={i}
-                          p="4"
                           w="100%"
                           borderWidth="1px"
                           borderRadius="md"
@@ -250,19 +250,61 @@ const Quizzes = () => {
                           onClick={() => handleQuizClick(quiz.quiz_id)}
                           _hover={{ shadow: "lg" }}
                           height="300px"
+                          rounded="xl"
                           position="relative"
                         >
-                          <Text fontSize="xl" fontWeight="semibold" mb={2}>
-                            {quiz.title}
-                          </Text>
-                          <Text fontSize="sm" color="gray.600" mb="2">
-                            {quiz.description}
-                          </Text>
-                          <Box position="absolute" bottom="4" left="4">
-                            <Text fontSize="sm">
-                              Categoria: {quiz.category}
-                            </Text>
+                          <Box w="100%" h="65%" position="relative">
+                            <Image
+                              src=".."
+                              alt={quiz.desc}
+                              h="100%"
+                              border="0px"
+                              borderBottom="1px"
+                              borderColor="gray.300"
+                            />
+                            <Button
+                              position="absolute"
+                              bottom="0"
+                              p={3}
+                              m={3}
+                              size="xs"
+                              rounded="full"
+                              textAlign="center"
+                              bg="blue.50"
+                              variant="none"
+                              w="20%"
+                            >
+                              <Text
+                                fontSize="10px"
+                                color="blue.500"
+                                rounded="full"
+                              >
+                                {quiz.type === "right_or_wrong"
+                                  ? "Quiz"
+                                  : quiz.type === "list"
+                                  ? "Lista"
+                                  : quiz.type === "about_me"
+                                  ? "Sobre Mim"
+                                  : "Personalidade"}
+                              </Text>
+                            </Button>
                           </Box>
+
+                          <Stack
+                            position="absolute"
+                            bottom="4"
+                            direction="column"
+                            spacing={1}
+                            p="4"
+                            alignContent="center"
+                            alignItems="center"
+                            justifyItems="center"
+                            justifyContent="center"
+                          >
+                            <Text fontSize="md" fontWeight="semibold" mb={2}>
+                              {quiz.title}
+                            </Text>
+                          </Stack>
                         </Box>
                       ))
                     ) : (
@@ -289,7 +331,7 @@ const Profiles = () => {
   return (
     <Flex justify="center" w="100%">
       <Grid w="50%">
-        <Text fontSize="xl" fontWeight="bold" mb={4} textAlign="center">
+        <Text fontSize="lg" fontWeight="semibold" mb={4} textAlign="start">
           Perfis Recomendados
         </Text>
         <Grid gap={5}>
