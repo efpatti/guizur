@@ -8,6 +8,7 @@ import {
   Grid,
   Stack,
   Spinner,
+  useMediaQuery,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { useQuizContext } from "../SharedElements/QuizContext";
@@ -20,7 +21,9 @@ const styleButtonFilterSelected = {
   border: "1px",
   borderColor: "transparent",
   color: "blue.600",
+  padding: "15px",
   fontWeight: "extralight",
+  fontSize: "12px",
 };
 
 const styleButtonFilter = {
@@ -28,8 +31,10 @@ const styleButtonFilter = {
   variant: "solid",
   border: "1px",
   borderColor: "gray.200",
-  color: "gray.800",
+  color: "gray.500",
+  padding: "15px",
   fontWeight: "extralight",
+  fontSize: "12px",
 };
 
 const styleButtonProfile = {
@@ -84,154 +89,197 @@ const Quizzes = () => {
     filter ? quiz.category === filter || quiz.type === filter : true
   );
 
+  const [isLargerThanMD] = useMediaQuery("(min-width: 48em)");
+
   return (
     <Flex w="100%" mb={10} justify="center" align="center">
-      <Grid templateColumns="1fr 400px" w="80%" direction="column">
-        <Box>
-          <Stack direction="column" spacing={5}>
-            <Grid templateColumns="repeat(7, 1fr)" gap={3}>
-              <Button
-                onClick={() => {
-                  setFilter(null);
-                  setActiveTab("todos");
-                }}
-                bg={activeTab === "todos" ? "blue.50" : "transparent"}
-                sx={
-                  activeTab === "todos"
-                    ? styleButtonFilterSelected
-                    : styleButtonFilter
-                }
-                size="sm"
-                width="100%"
+      <Stack
+        direction={isLargerThanMD ? "row" : "column"}
+        w="100%"
+        h="100%"
+        spacing={isLargerThanMD ? 0 : 0}
+      >
+        <Box w={isLargerThanMD ? "70%" : "100%"}>
+          <Grid
+            templateColumns={isLargerThanMD ? "" : "repeat(1, 1fr)"}
+            w="100%"
+            h="100%"
+            direction="column"
+            placeItems="center"
+          >
+            <Box w="100%">
+              <Stack
+                direction="column"
+                spacing={4}
+                w="100%"
+                align="center"
+                justify="center"
               >
-                Todos
-              </Button>
-              <Button
-                onClick={() => setActiveTab("categorias")}
-                bg={activeTab === "categorias" ? "blue.50" : "transparent"}
-                sx={
-                  activeTab === "categorias"
-                    ? styleButtonFilterSelected
-                    : styleButtonFilter
-                }
-                size="sm"
-                width="100%"
-              >
-                Categorias
-              </Button>
-              <Button
-                onClick={() => setActiveTab("tipos")}
-                bg={activeTab === "tipos" ? "blue.50" : "transparent"}
-                sx={
-                  activeTab === "tipos"
-                    ? styleButtonFilterSelected
-                    : styleButtonFilter
-                }
-                size="sm"
-                width="100%"
-              >
-                Tipos
-              </Button>
-            </Grid>
-            {activeTab === "categorias" && (
-              <Grid
-                templateColumns="repeat(auto-fit, minmax(120px, 1fr))"
-                gap={3}
-              >
-                {categorias.map((item, i) => (
+                <Grid
+                  templateColumns="repeat(3, 1fr)"
+                  gap={3}
+                  placeContent="center"
+                  placeItems="center"
+                >
                   <Button
-                    key={i}
                     onClick={() => {
-                      setFilter(item.name);
-                      setActiveTab("categorias");
+                      setFilter(null);
+                      setActiveTab("todos");
                     }}
-                    bg={filter === item.name ? "blue.50" : "transparent"}
+                    bg={activeTab === "todos" ? "blue.50" : "transparent"}
                     sx={
-                      filter === item.name
+                      activeTab === "todos"
                         ? styleButtonFilterSelected
                         : styleButtonFilter
                     }
-                    size="sm"
-                    width="100%"
+                    size={isLargerThanMD ? "sm" : "xs"}
+                    w="100%"
                   >
-                    {item.name} (
-                    {quizzes.filter((q) => q.category === item.name).length})
+                    Todos
                   </Button>
-                ))}
-              </Grid>
-            )}
-            {activeTab === "tipos" && (
-              <Grid
-                templateColumns="repeat(auto-fit, minmax(120px, 1fr))"
-                gap={3}
-              >
-                {tipos.map((item, i) => (
                   <Button
-                    key={i}
-                    onClick={() => {
-                      setFilter(item.code);
-                      setActiveTab("tipos");
-                    }}
-                    bg={filter === item.code ? "blue.50" : "transparent"}
+                    onClick={() => setActiveTab("categorias")}
+                    bg={activeTab === "categorias" ? "blue.50" : "transparent"}
                     sx={
-                      filter === item.code
+                      activeTab === "categorias"
                         ? styleButtonFilterSelected
                         : styleButtonFilter
                     }
-                    size="sm"
-                    width="100%"
+                    size={isLargerThanMD ? "sm" : "xs"}
+                    w="100%"
                   >
-                    {item.name === "Quiz de Certo e Errado"
-                      ? "Quiz"
-                      : item.name === "Quiz de Personalidade"
-                      ? "Personalidade"
-                      : item.name}{" "}
+                    Categorias
                   </Button>
-                ))}
-              </Grid>
-            )}
-            {loading ? (
-              <Flex justify="center" align="center" height="300px">
-                <Spinner size="xl" />
-              </Flex>
-            ) : (
-              <SimpleGrid columns={3} gap={4} mt="4" w="100%">
-                {filteredQuizzes.length > 0 ? (
-                  filteredQuizzes.map((quiz, i) => (
-                    <Box
-                      key={i}
-                      p="4"
-                      borderWidth="1px"
-                      borderRadius="md"
-                      shadow="md"
-                      cursor="pointer"
-                      onClick={() => handleQuizClick(quiz.quiz_id)}
-                      _hover={{ shadow: "lg" }}
-                      height="300px"
-                      position="relative"
-                    >
-                      <Text fontSize="xl" fontWeight="semibold" mb={2}>
-                        {quiz.title}
-                      </Text>
-                      <Text fontSize="sm" color="gray.600" mb="2">
-                        {quiz.description}
-                      </Text>
-                      <Box position="absolute" bottom="4" left="4">
-                        <Text fontSize="sm">Categoria: {quiz.category}</Text>
-                      </Box>
-                    </Box>
-                  ))
-                ) : (
-                  <Text>Nenhum quiz encontrado.</Text>
+                  <Button
+                    onClick={() => setActiveTab("tipos")}
+                    bg={activeTab === "tipos" ? "blue.50" : "transparent"}
+                    sx={
+                      activeTab === "tipos"
+                        ? styleButtonFilterSelected
+                        : styleButtonFilter
+                    }
+                    size={isLargerThanMD ? "sm" : "xs"}
+                    w="100%"
+                  >
+                    Tipos
+                  </Button>
+                </Grid>
+                {activeTab === "categorias" && (
+                  <Grid
+                    templateColumns="repeat(auto-fit, minmax(100px, 1fr))"
+                    gap={3}
+                    w="50%"
+                  >
+                    {categorias.map((item, i) => (
+                      <Button
+                        key={i}
+                        onClick={() => {
+                          setFilter(item.name);
+                          setActiveTab("categorias");
+                        }}
+                        bg={filter === item.name ? "blue.50" : "transparent"}
+                        sx={
+                          filter === item.name
+                            ? styleButtonFilterSelected
+                            : styleButtonFilter
+                        }
+                        size={isLargerThanMD ? "sm" : "xs"}
+                        width="100%"
+                      >
+                        {item.name} (
+                        {quizzes.filter((q) => q.category === item.name).length}
+                        )
+                      </Button>
+                    ))}
+                  </Grid>
                 )}
-              </SimpleGrid>
-            )}
-          </Stack>
+                {activeTab === "tipos" && (
+                  <Grid
+                    templateColumns="repeat(auto-fit, minmax(100px, 1fr))"
+                    gap={3}
+                    w="50%"
+                  >
+                    {tipos.map((item, i) => (
+                      <Button
+                        key={i}
+                        onClick={() => {
+                          setFilter(item.code);
+                          setActiveTab("tipos");
+                        }}
+                        bg={filter === item.code ? "blue.50" : "transparent"}
+                        sx={
+                          filter === item.code
+                            ? styleButtonFilterSelected
+                            : styleButtonFilter
+                        }
+                        size={isLargerThanMD ? "sm" : "xs"}
+                        w="100%"
+                      >
+                        {item.name === "Quiz de Certo e Errado"
+                          ? "Quiz"
+                          : item.name === "Quiz de Personalidade"
+                          ? "Personalidade"
+                          : item.name}{" "}
+                      </Button>
+                    ))}
+                  </Grid>
+                )}
+                {loading ? (
+                  <Flex justify="center" align="center" height="300px">
+                    <Spinner size="xl" />
+                  </Flex>
+                ) : (
+                  <SimpleGrid
+                    columns={isLargerThanMD ? 3 : 1}
+                    gap={3}
+                    mt="4"
+                    w="70%"
+                    placeContent="center"
+                    placeItems="center"
+                  >
+                    {filteredQuizzes.length > 0 ? (
+                      filteredQuizzes.map((quiz, i) => (
+                        <Box
+                          key={i}
+                          p="4"
+                          w="100%"
+                          borderWidth="1px"
+                          borderRadius="md"
+                          shadow="md"
+                          cursor="pointer"
+                          onClick={() => handleQuizClick(quiz.quiz_id)}
+                          _hover={{ shadow: "lg" }}
+                          height="300px"
+                          position="relative"
+                        >
+                          <Text fontSize="xl" fontWeight="semibold" mb={2}>
+                            {quiz.title}
+                          </Text>
+                          <Text fontSize="sm" color="gray.600" mb="2">
+                            {quiz.description}
+                          </Text>
+                          <Box position="absolute" bottom="4" left="4">
+                            <Text fontSize="sm">
+                              Categoria: {quiz.category}
+                            </Text>
+                          </Box>
+                        </Box>
+                      ))
+                    ) : (
+                      <Text>Nenhum quiz encontrado.</Text>
+                    )}
+                  </SimpleGrid>
+                )}
+              </Stack>
+            </Box>
+          </Grid>
         </Box>
-        <Box>
-          <Profiles />
-        </Box>
-      </Grid>
+        {isLargerThanMD && (
+          <Box w="30%">
+            <Profiles />
+          </Box>
+        )}
+      </Stack>
     </Flex>
   );
 };
@@ -239,21 +287,18 @@ const Quizzes = () => {
 const Profiles = () => {
   const { users } = useAuth();
   return (
-    <Flex justify="center">
-      <Grid>
-        <Text fontSize="xl" fontWeight="bold">
+    <Flex justify="center" w="100%">
+      <Grid w="50%">
+        <Text fontSize="xl" fontWeight="bold" mb={4} textAlign="center">
           Perfis Recomendados
         </Text>
-        <Grid gap={5} mt={3}>
+        <Grid gap={5}>
           {users.map((item, i) => (
-            <Grid
-              templateColumns="repeat(3, 1fr)"
-              key={i}
-              gap={3}
-              placeItems="start"
-            >
-              <ImageViewer idUsuario={item.idUsuario} pad={3} />
-              <Box as={Grid} placeItems="start">
+            <Grid templateColumns="auto 1fr auto" key={i} gap={3}>
+              <Box boxSize="50px">
+                <ImageViewer idUsuario={item.idUsuario} pad={0} />
+              </Box>
+              <Box>
                 <Text fontWeight="semibold">{item.nome}</Text>
                 <Text fontSize="sm" fontWeight="light" color="gray.600">
                   {item.email}
