@@ -12,7 +12,6 @@ const Dashboard = () => {
 
   const [tipos, setTipos] = useState([]);
   const [aoEditarTipo, setAoEditarTipo] = useState(null);
-
   const pegarTipos = async () => {
     try {
       const res = await axios.get(`${addressBack}/types`);
@@ -21,11 +20,10 @@ const Dashboard = () => {
       toast.error("Erro ao carregar tipos");
     }
   };
-
   useEffect(() => {
     document.title = "Guizur | Tipos";
     pegarTipos(); // Chamada inicial para carregar tipos
-  }, []); // Array vazio indica que useEffect será executado apenas uma vez após a montagem do componente
+  }); // Array vazio indica que useEffect será executado apenas uma vez após a montagem do componente
 
   return (
     <>

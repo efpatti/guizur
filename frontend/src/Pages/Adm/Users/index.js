@@ -29,7 +29,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     pegarUsuarios();
-  }, []);
+  });
 
   return (
     <>

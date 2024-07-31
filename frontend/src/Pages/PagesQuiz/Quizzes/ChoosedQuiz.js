@@ -17,16 +17,15 @@ const QuizEscolhido = () => {
   const { addressBack } = useAuth();
   const [usuario, setUsuario] = useState(null); // Inicializa como null
 
-  const pegarUsuarioPorId = async (userId) => {
-    try {
-      const res = await axios.get(`${addressBack}/usuarios/${userId}`);
-      setUsuario(res.data);
-    } catch (error) {
-      toast.error("Erro ao carregar usuário");
-    }
-  };
-
   useEffect(() => {
+    const pegarUsuarioPorId = async (userId) => {
+      try {
+        const res = await axios.get(`${addressBack}/usuarios/${userId}`);
+        setUsuario(res.data);
+      } catch (error) {
+        toast.error("Erro ao carregar usuário");
+      }
+    };
     const fetchData = async () => {
       try {
         const responseQuiz = await axios.get(

@@ -23,11 +23,10 @@ const Dashboard = () => {
       toast.error("Erro ao carregar categorias");
     }
   };
-
   useEffect(() => {
     document.title = "Guizur | Categorias";
     pegarCategorias(); // Chamada inicial para carregar categorias
-  }, []); // Array vazio indica que useEffect será executado apenas uma vez após a montagem do componente
+  }); // Array vazio indica que useEffect será executado apenas uma vez após a montagem do componente
 
   return (
     <>

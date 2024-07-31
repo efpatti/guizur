@@ -92,7 +92,7 @@ function NovoQuiz() {
 
   useEffect(() => {
     getTypeChoosed();
-  }, [tipoEscolhido]);
+  });
 
   const labelInput = {
     fontWeight: "light",

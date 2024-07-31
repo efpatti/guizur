@@ -44,6 +44,9 @@ const CreateQuestion = ({ quizId }) => {
         questionData
       );
 
+      // Use the response if necessary
+      console.log("Response data:", response.data);
+
       toast.success("Questão criada com sucesso!");
       clearInputs();
     } catch (error) {

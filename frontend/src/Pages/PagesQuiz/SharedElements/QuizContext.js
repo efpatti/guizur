@@ -40,7 +40,7 @@ export const QuizProvider = ({ children }) => {
     pegarQuizzes();
     pegarCategorias();
     pegarTipos();
-  }, []); // Executa apenas uma vez ao montar o contexto
+  }, [addressBack]); // Executa apenas uma vez ao montar o contexto
 
   const pegarQuestoes = async (quiz_id) => {
     try {
