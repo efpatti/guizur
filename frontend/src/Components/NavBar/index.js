@@ -7,17 +7,18 @@ import {
   InputGroup,
   Input,
   Grid,
-  Stack,
+  useMediaQuery,
   InputLeftElement,
 } from "@chakra-ui/react";
 import { FaHome, FaPlusCircle, FaCompass, FaSearch } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../Hooks/useAuth";
+import ImageViewer from "../../Pages/Images/ImageViewer";
 
 function NavBar() {
   const [page, setPage] = useState(""); // State to track current page
   const navigate = useNavigate();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
 
   useEffect(() => {
     // Update page state with current pathname on component mount
@@ -49,40 +50,44 @@ function NavBar() {
     },
   ];
 
+  // Verifica o tamanho da tela usando useMediaQuery
+  const [isLargerThanMD] = useMediaQuery("(min-width: 48em)");
+
   return (
-    <Box position="fixed" width="100%" zIndex={100}>
-      <Box boxShadow="sm" w="100%" bg="white">
-        <Flex
-          as="nav"
-          justify="center"
-          wrap="wrap"
-          padding="0.8rem"
-          w="full"
-          shadow="lg"
+    <Box
+      pos="fixed"
+      top={0}
+      left={0}
+      right={0}
+      bg="white"
+      boxShadow="sm"
+      zIndex={2}
+      h="10%"
+      w="100%"
+    >
+      <Flex as="nav" justify="space-evenly" w="100%" h="100%">
+        <Grid
+          w={isLargerThanMD ? "85%" : "100%"}
+          templateColumns={isLargerThanMD ? "repeat(3, 1fr)" : "repeat(1, 1fr)"}
+          p="0px"
+          m={0}
+          placeContent="center"
+          placeItems="center"
         >
-          <Grid
-            templateColumns={`repeat(3, 1fr)`}
-            gap={0}
-            placeContent="center"
-            placeItems="center"
-            w="3/4"
-          >
-            <Stack direction="row" spacing={6}>
+          {isLargerThanMD && (
+            <Grid
+              direction="row"
+              spacing={6}
+              templateColumns={`repeat(3, 1fr)`}
+              placeContent="center"
+              placeItems="center"
+            >
               {navLinks.map((item, i) => (
                 <Button
                   key={i}
                   w="full"
                   size="md"
-                  leftIcon={
-                    <item.icon
-                      style={{
-                        color:
-                          page === item.href &&
-                          item.href === "/logado" &&
-                          "blue.500",
-                      }}
-                    />
-                  }
+                  leftIcon={<item.icon />}
                   variant="none"
                   _hover={{ color: "blue.600" }}
                   color={page === item.href && "blue.700"}
@@ -94,44 +99,69 @@ function NavBar() {
                   {item.name}
                 </Button>
               ))}
-            </Stack>
+            </Grid>
+          )}
+          {isLargerThanMD && (
             <InputGroup
-              w="20rem"
+              w="70%"
               bg="blackAlpha.50"
               rounded="xl"
               alignItems="center"
-              justifyContent="center"
+              justifyContent="space-between"
+              px={4}
+              py={2}
             >
               <InputLeftElement
                 pointerEvents="none"
                 children={<FaSearch />}
-                rounded="xl"
-                h="full"
                 color="gray.400"
-                display="flex"
-                alignItems="center"
-                justifyContent="center"
+                ml={2}
               />
-              <Box width="2rem" />
               <Input
                 variant="unstyled"
                 placeholder="Pesquise no Guizur"
-                p={3}
+                _placeholder={{ color: "gray.500" }}
+                px={2}
+                py={1}
+                mr={2}
+                rounded="xl"
+                _focus={{ outline: "none" }}
               />
             </InputGroup>
-            <Grid templateColumns="repeat(2, 1fr)" gap={6} w="full">
-              <Button
-                bg="blue.600"
-                color="gray.100"
-                variant="none"
-                align="center"
-                justify="center"
-              >
-                <Flex align="center">
-                  <FaPlusCircle />
-                  <Text ml={2}>Criar Quiz</Text>
-                </Flex>
-              </Button>
+          )}
+          <Grid
+            templateColumns="repeat(2, 1fr)"
+            gap={6}
+            w={isLargerThanMD ? "50%" : "100%"}
+            h="100%"
+            placeContent="center"
+            placeItems="center"
+          >
+            <Button
+              bg="blue.600"
+              color="gray.100"
+              variant="none"
+              align="center"
+              justify="center"
+            >
+              <Flex align="center">
+                <FaPlusCircle />
+                <Text ml={2}>Criar Quiz</Text>
+              </Flex>
+            </Button>
+            {isAuthenticated ? (
+              <Box boxSize="45px">
+                <Button
+                  size="100%"
+                  variant="none"
+                  float="left"
+                  h="100%"
+                  borderRadius="full"
+                >
+                  <ImageViewer idUsuario={user.idUsuario} />
+                </Button>
+              </Box>
+            ) : (
               <Button
                 variant="ghost"
                 bg="white"
@@ -142,10 +172,10 @@ function NavBar() {
               >
                 Entrar
               </Button>
-            </Grid>
+            )}
           </Grid>
-        </Flex>
-      </Box>
+        </Grid>
+      </Flex>
     </Box>
   );
 }

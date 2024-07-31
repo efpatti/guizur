@@ -3,7 +3,7 @@ import axios from "axios";
 import { Box, Image, Button, useToast } from "@chakra-ui/react";
 import { useAuth } from "../../Hooks/useAuth";
 
-const ImageViewer = ({ idUsuario, pad }) => {
+const ImageViewer = ({ idUsuario, pad, iSize }) => {
   const [imageSrc, setImageSrc] = useState("");
   const { addressBack } = useAuth();
   const toast = useToast();
@@ -31,11 +31,17 @@ const ImageViewer = ({ idUsuario, pad }) => {
   }, [idUsuario, toast, addressBack]);
 
   return (
-    <Box p={pad}>
+    <Box
+      display="flex"
+      alignItems="center" // Alinha verticalmente o conteúdo dentro da caixa
+      p={pad}
+      w="full"
+      h="full"
+    >
       {imageSrc ? (
-        <Image mt={4} src={imageSrc} alt="Fetched" />
+        <Image src={imageSrc} alt="Fetched" />
       ) : (
-        <Button colorScheme="teal" isDisabled={!idUsuario}>
+        <Button colorScheme="teal" isDisabled={!idUsuario} w="100%">
           No image available
         </Button>
       )}
